@@ -12,7 +12,6 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <index element={<Dashboard />} />
           <Route index element={<Dashboard />} />
           <Route path="admin" element={<Admin />} />
           <Route path="accounts" element={<Accounts />} />
