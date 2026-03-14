@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { NavLink, Outlet } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { logout } from '../utils/auth';
 import { 
   LayoutDashboard, 
   Users, 
@@ -14,7 +15,7 @@ import {
 } from 'lucide-react';
 
 const navItems = [
-  { name: 'Dashboard', path: '/', icon: LayoutDashboard },
+  { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
   { name: 'Admin', path: '/admin', icon: Users },
   { name: 'Accounts', path: '/accounts', icon: Briefcase },
   { name: 'Inventory', path: '/inventory', icon: PackageSearch },
@@ -24,6 +25,12 @@ const navItems = [
 
 export default function Layout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login', { replace: true });
+  };
 
   return (
     <div className="layouts">
@@ -84,7 +91,24 @@ export default function Layout() {
                 <div style={{ fontSize: '0.875rem', fontWeight: 600 }}>Admin User</div>
                 <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Superadmin</div>
               </div>
-            </div>
+          </div>
+          <button
+            onClick={handleLogout}
+            style={{
+              border: 'none',
+              background: 'transparent',
+              color: 'var(--text-muted)',
+              fontSize: '0.875rem',
+              cursor: 'pointer',
+              padding: '0.25rem 0.5rem',
+              borderRadius: '6px',
+              transition: 'background .2s',
+            }}
+            onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.1)'}
+            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+          >
+            Logout
+          </button>
           </div>
         </header>
         
