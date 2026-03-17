@@ -15,22 +15,30 @@ export const Header: React.FC<HeaderProps> = ({ user, onMenuClick, onLogout, onS
   const { mode, toggleTheme } = useSuperAdminTheme();
   const isDarkMode = mode === 'dark';
   
-  const [isSearchFocused, setIsSearchFocused] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
   const [showNotifications, setShowNotifications] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [showCompanyMenu, setShowCompanyMenu] = useState(false);
+  const [currentCompany, setCurrentCompany] = useState('Hari silks');
+  
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
   
   const notificationsRef = useRef<HTMLDivElement>(null);
   const userMenuRef = useRef<HTMLDivElement>(null);
+  const companyMenuRef = useRef<HTMLDivElement>(null);
 
   // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (notificationsRef.current && !notificationsRef.current.contains(event.target as Node)) {
+      const target = event.target as Node;
+      if (notificationsRef.current && !notificationsRef.current.contains(target)) {
         setShowNotifications(false);
       }
-      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
+      if (userMenuRef.current && !userMenuRef.current.contains(target)) {
         setShowUserMenu(false);
+      }
+      if (companyMenuRef.current && !companyMenuRef.current.contains(target)) {
+        setShowCompanyMenu(false);
       }
     };
 
@@ -38,6 +46,7 @@ export const Header: React.FC<HeaderProps> = ({ user, onMenuClick, onLogout, onS
       if (event.key === 'Escape') {
         setShowNotifications(false);
         setShowUserMenu(false);
+        setShowCompanyMenu(false);
       }
     };
 
@@ -50,67 +59,148 @@ export const Header: React.FC<HeaderProps> = ({ user, onMenuClick, onLogout, onS
     };
   }, []);
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    // TODO: Implement global search functionality
-    console.log('Search query:', searchQuery);
-  };
+  const companies = [
+    'Hari silks', 
+    'SRI HARI TEXTILES', 
+    'S.SARASWATHI BAI', 
+    'HARI ENTERPRISE', 
+    'HARI SILK HOUSE'
+  ];
 
+  const today = new Date().toLocaleDateString('en-US', { 
+    weekday: 'short', 
+    year: 'numeric', 
+    month: 'short', 
+    day: 'numeric' 
+  });
 
   return (
     <header 
-      className="relative z-40 transition-colors duration-200 bg-white shadow-sm border-b border-slate-200 backdrop-blur-sm bg-white/95"
+      className="sticky top-0 z-40 transition-all duration-300 bg-white/80 backdrop-blur-md border-b border-slate-200 shadow-sm"
     >
-      <div className="flex items-center justify-between h-20 px-6 lg:px-8">
-        {/* Left section */}
-        <div className="flex items-center">
-          {/* Mobile menu button */}
-          <button
-            onClick={onMenuClick}
-            className="lg:hidden p-3 rounded-xl text-[#002147] hover:text-[#001a33] hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-[#002147] transition-all"
-          >
-            <Icon name="menu" size="md" />
-          </button>
-        </div>
-
-        {/* Center section - Search */}
-        <div className="flex-1 max-w-2xl mx-8 hidden md:block">
-          <form onSubmit={handleSearch} className="relative">
-            <div className="relative">
+      <div className="flex items-center justify-between h-20 px-6 lg:px-8 mx-auto w-full">
+        {/* LEFT SECTION */}
+        <div className="flex items-center flex-1">
+          {/* Search Bar - ONLY for Super Admin side */}
+          {user.role === 'super_admin' && (
+            <div className={cn(
+              "relative w-full max-w-md transition-all duration-300",
+              isSearchFocused ? "max-w-lg" : "max-w-xs "
+            )}>
               <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                <Icon name="search" className={cn(user.role === 'super_admin' ? "text-[var(--sa-text-secondary)]" : "text-[#002147]")} size="sm" />
+                <Icon 
+                  name="search" 
+                  size="sm" 
+                  className={cn("transition-colors", isSearchFocused ? "text-indigo-600" : "text-slate-400")} 
+                />
               </div>
               <input
                 type="text"
+                placeholder="Search anything..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onFocus={() => setIsSearchFocused(true)}
                 onBlur={() => setIsSearchFocused(false)}
                 className={cn(
-                  "block w-full pl-12 pr-4 py-3 border font-medium transition-all duration-200 text-sm rounded-xl focus:outline-none focus:ring-2",
-                  user.role === 'super_admin'
-                    ? "bg-[var(--sa-card)] border-[var(--sa-border)] text-[var(--sa-text-primary)] placeholder-[var(--sa-text-secondary)] focus:ring-[var(--sa-primary)] focus:border-[var(--sa-primary)]"
-                    : "border-slate-200 leading-5 bg-slate-50 placeholder-slate-400 focus:placeholder-slate-300 focus:ring-blue-500 focus:border-blue-500 focus:bg-white",
-                  isSearchFocused && user.role !== 'super_admin' && "bg-white shadow-lg"
+                  "block w-full pl-11 pr-12 py-2.5 text-sm font-bold bg-slate-100/50 border-2 border-transparent rounded-2xl transition-all outline-none",
+                  isSearchFocused 
+                    ? "bg-white border-indigo-500 shadow-lg shadow-indigo-100 ring-4 ring-indigo-50" 
+                    : "hover:bg-slate-100 text-slate-600"
                 )}
-                placeholder="Search companies, admins, subscriptions..."
               />
+              <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+                <span className="text-[10px] font-black text-slate-400 border border-slate-200 rounded px-1.5 py-0.5 bg-white uppercase tracking-tighter">
+                  ⌘ K
+                </span>
+              </div>
             </div>
-          </form>
+          )}
+
+          {/* Company Switcher moved to Left - ONLY for Admin side */}
+          {user.role === 'admin' && (
+            <div className="relative" ref={companyMenuRef}>
+              <button
+                onClick={() => setShowCompanyMenu(!showCompanyMenu)}
+                className="flex items-center px-4 py-2 space-x-4 rounded-2xl hover:bg-slate-50 transition-all border border-transparent hover:border-slate-100 group"
+              >
+                <div className="w-11 h-11 rounded-xl bg-indigo-600 flex items-center justify-center text-white shadow-lg shadow-indigo-200 group-hover:scale-105 transition-transform">
+                  <Icon name="building-2" size="sm" />
+                </div>
+                <div className="text-left">
+                  <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-0.5">Active Entity</p>
+                  <div className="flex items-center">
+                    <p className="text-base font-black text-slate-900 leading-none mr-2">{currentCompany}</p>
+                    <Icon name="chevron-down" size="xs" className={cn("text-slate-400 transition-transform", showCompanyMenu && "rotate-180")} />
+                  </div>
+                </div>
+              </button>
+
+              {showCompanyMenu && (
+                <div className="absolute top-full left-0 mt-3 w-[400px] bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden z-[70] animate-in fade-in slide-in-from-top-3 duration-200">
+                  <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+                    <span className="text-[11px] font-black text-slate-400 uppercase tracking-wider">My Organizations</span>
+                    <button className="flex items-center text-xs font-bold text-slate-600 hover:text-indigo-600 transition-colors">
+                      <Icon name="cog" size="xs" className="mr-1.5" />
+                      Manage Company
+                    </button>
+                  </div>
+                  <div className="max-h-[420px] overflow-y-auto py-2 custom-scrollbar">
+                    {companies.map((comp) => (
+                      <button
+                        key={comp}
+                        onClick={() => {
+                          setCurrentCompany(comp);
+                          setShowCompanyMenu(false);
+                        }}
+                        className={cn(
+                          "w-full flex items-center px-5 py-4 transition-all hover:bg-slate-50 relative group",
+                          currentCompany === comp ? "bg-indigo-50/50" : ""
+                        )}
+                      >
+                        <div className={cn(
+                          "w-12 h-8 rounded-md flex items-center justify-center mr-4 shadow-sm",
+                          currentCompany === comp ? "bg-indigo-600 text-white" : "bg-slate-100 text-slate-400 group-hover:bg-slate-200"
+                        )}>
+                          <Icon name="building-2" size="xs" />
+                        </div>
+                        <span className={cn(
+                          "text-sm font-bold tracking-tight transition-colors",
+                          currentCompany === comp ? "text-indigo-600" : "text-slate-700 group-hover:text-slate-900"
+                        )}>
+                          {comp}
+                        </span>
+                        {currentCompany === comp && (
+                          <div className="ml-auto w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center text-white">
+                            <Icon name="check-circle" size="xs" />
+                          </div>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
-        {/* Right section */}
-        <div className="flex items-center space-x-3">
-          {/* Theme toggle */}
+        {/* RIGHT SECTION */}
+        <div className="flex items-center space-x-2 lg:space-x-4">
+          {/* Removed company switcher from here */}
+
+          {/* Business Date */}
+          <div className="hidden md:flex items-center px-4 py-2 bg-slate-50 rounded-xl border border-slate-100">
+            <Icon name="calendar" size="xs" className="text-slate-400 mr-3" />
+            <span className="text-xs font-bold text-slate-600 uppercase tracking-widest">{today}</span>
+          </div>
+
+          {/* Vertical Divider */}
+          <div className="h-8 w-px bg-slate-200 hidden lg:block mx-2"></div>
+
+          {/* Dark Mode Toggle */}
           <button
             onClick={toggleTheme}
-            className={cn(
-              "p-3 rounded-xl transition-all focus:outline-none focus:ring-2",
-              user.role === 'super_admin'
-                ? "hover:bg-[var(--sa-hover)] text-[var(--sa-text-secondary)] hover:text-[var(--sa-text-primary)] focus:ring-[var(--sa-primary)]"
-                : "text-slate-400 hover:text-slate-600 hover:bg-slate-100 focus:ring-blue-500"
-            )}
-            title={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+            className="p-3 rounded-xl text-slate-400 hover:text-indigo-600 hover:bg-slate-100 transition-all"
+            title={isDarkMode ? 'Switch to Light' : 'Switch to Dark'}
           >
             <Icon name={isDarkMode ? 'sun' : 'moon'} size="sm" />
           </button>
@@ -123,55 +213,37 @@ export const Header: React.FC<HeaderProps> = ({ user, onMenuClick, onLogout, onS
                 setShowUserMenu(false);
               }}
               className={cn(
-                "p-3 rounded-xl focus:outline-none focus:ring-2 transition-all relative",
-                user.role === 'super_admin'
-                  ? showNotifications 
-                    ? "text-[var(--sa-primary)] bg-[color-mix(in srgb, var(--sa-primary), transparent 90%)]" 
-                    : "text-[var(--sa-text-secondary)] hover:bg-[var(--sa-hover)] hover:text-[var(--sa-text-primary)] focus:ring-[var(--sa-primary)]"
-                  : showNotifications 
-                    ? 'text-blue-600 bg-blue-50' 
-                    : 'text-slate-400 hover:text-slate-600 hover:bg-slate-100 focus:ring-blue-500'
+                "p-3 rounded-xl transition-all relative group",
+                showNotifications ? "bg-indigo-50 text-indigo-600" : "text-slate-400 hover:text-indigo-600 hover:bg-slate-100"
               )}
             >
               <Icon name="bell" size="sm" />
-              {/* Notification badge */}
-              <span className="absolute top-2.5 right-2.5 block h-2 w-2 rounded-full bg-red-400 ring-2 ring-white"></span>
+              <span className="absolute top-2.5 right-2.5 block h-2.5 w-2.5 rounded-full bg-rose-500 ring-2 ring-white group-hover:scale-110 transition-transform"></span>
             </button>
 
             {showNotifications && (
-              <div 
-                className={cn(
-                  "absolute right-0 mt-2 w-80 rounded-xl shadow-xl ring-1 focus:outline-none z-[60] border transition-all duration-200",
-                  user.role === 'super_admin'
-                    ? "bg-[var(--sa-card)] border-[var(--sa-border)] ring-[var(--sa-border)]"
-                    : "bg-white border-slate-200 ring-slate-200 shadow-xl"
-                )}
-              >
-                <div className="py-1">
-                  <div className={cn(
-                    "px-4 py-3 text-sm font-semibold border-b rounded-t-xl",
-                    user.role === 'super_admin'
-                      ? "text-[var(--sa-text-primary)] border-[var(--sa-border)] bg-[var(--sa-hover)]"
-                      : "text-slate-900 border-slate-200 bg-slate-50"
-                  )}>
-                    Notifications
-                  </div>
-                  <div className="px-4 py-8 text-sm text-center">
-                    <Icon 
-                      name="bell" 
-                      className={cn("mx-auto mb-3", user.role === 'super_admin' ? "text-[color-mix(in srgb, var(--sa-primary), transparent 60%)]" : "text-slate-300")} 
-                      size="lg" 
-                    />
-                    <p className={cn(user.role === 'super_admin' ? "text-[var(--sa-text-secondary)]" : "text-slate-500")}>
-                      No new notifications
-                    </p>
+              <div className="absolute right-0 mt-3 w-80 bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden z-[70] animate-in fade-in slide-in-from-top-3 duration-200">
+                <div className="px-5 py-4 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
+                  <h3 className="font-bold text-slate-900">Notifications</h3>
+                  <button className="text-xs font-bold text-indigo-600 hover:underline">Mark all read</button>
+                </div>
+                <div className="max-h-[360px] overflow-y-auto hide-scrollbar">
+                  <div className="p-8 text-center">
+                    <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <Icon name="bell-off" className="text-slate-300" size="lg" />
+                    </div>
+                    <p className="text-sm font-bold text-slate-900 mb-1">All caught up!</p>
+                    <p className="text-xs text-slate-500">No new alerts or approval requests.</p>
                   </div>
                 </div>
               </div>
             )}
           </div>
 
-          {/* User menu */}
+          {/* Vertical Divider */}
+          <div className="h-8 w-px bg-slate-200 hidden lg:block mx-1"></div>
+
+          {/* User Profile */}
           <div className="relative" ref={userMenuRef}>
             <button
               onClick={() => {
@@ -179,145 +251,62 @@ export const Header: React.FC<HeaderProps> = ({ user, onMenuClick, onLogout, onS
                 setShowNotifications(false);
               }}
               className={cn(
-                "flex items-center p-1.5 rounded-xl transition-all focus:outline-none focus:ring-2",
-                user.role === 'super_admin'
-                  ? showUserMenu 
-                    ? "bg-[var(--sa-hover)] ring-2 ring-[var(--sa-primary)]" 
-                    : "hover:bg-[var(--sa-hover)] focus:ring-[var(--sa-primary)]"
-                  : showUserMenu 
-                    ? 'text-blue-600 bg-blue-50 focus:ring-blue-500' 
-                    : 'text-slate-400 hover:text-slate-600 hover:bg-slate-100 focus:ring-blue-500'
+                "flex items-center p-1.5 space-x-3 rounded-2xl transition-all border border-transparent",
+                showUserMenu ? "bg-white shadow-lg border-slate-200 ring-4 ring-slate-50" : "hover:bg-slate-50"
               )}
             >
-              <div className={cn(
-                "w-9 h-9 rounded-xl flex items-center justify-center mr-3 shadow-lg transition-transform",
-                user.role === 'super_admin' ? "bg-[var(--sa-primary)]" : "bg-gradient-to-br from-blue-500 to-blue-600"
-              )}>
-                <Icon name="user-circle" className="text-white" size="sm" />
-              </div>
-              <div className="hidden md:block text-left">
-                <div className={cn("text-sm font-semibold", user.role === 'super_admin' ? "text-[var(--sa-text-primary)]" : "text-slate-900")}>
-                  {user.fullName}
-                </div>
-                <div className={cn("text-[11px] font-medium uppercase tracking-wider", user.role === 'super_admin' ? "text-[var(--sa-text-secondary)]" : "text-slate-500")}>
-                  {user.role.replace('_', ' ')}
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-600 p-[2px] shadow-lg shadow-indigo-200 transition-transform group-hover:scale-105">
+                <div className="w-full h-full rounded-[9px] bg-white flex items-center justify-center overflow-hidden">
+                  <img 
+                    src={`https://ui-avatars.com/api/?name=${user.fullName}&background=6366f1&color=fff&bold=true`} 
+                    alt="avatar" 
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               </div>
-              <Icon name="chevron-down" className={cn("ml-2 transition-transform", showUserMenu ? "rotate-180" : "", user.role === 'super_admin' ? "text-[var(--sa-text-secondary)]" : "text-slate-400")} size="sm" />
+              <div className="hidden lg:block text-left pr-2">
+                <p className="text-sm font-black text-slate-900 leading-tight">{user.fullName}</p>
+                <div className="flex items-center mt-0.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"></span>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{user.role === 'admin' ? 'Account Admin' : user.role.replace('_', ' ')}</span>
+                </div>
+              </div>
+              <Icon name="chevron-down" className={cn("text-slate-400 transition-transform", showUserMenu && "rotate-180")} size="xs" />
             </button>
 
             {showUserMenu && (
-              <div 
-                className={cn(
-                  "absolute right-0 mt-2 w-64 rounded-xl shadow-xl ring-1 focus:outline-none z-[60] border overflow-hidden transition-all duration-200",
-                  user.role === 'super_admin'
-                    ? "bg-[var(--sa-card)] border-[var(--sa-border)] ring-[var(--sa-border)]"
-                    : "bg-white border-slate-200 ring-slate-200"
-                )}
-              >
-                <div className="py-2">
-                  <div className="px-4 py-3 border-b mb-1 md:hidden" style={{ borderColor: 'var(--sa-border)' }}>
-                     <p className="text-sm font-semibold" style={{ color: 'var(--sa-text-primary)' }}>{user.fullName}</p>
-                     <p className="text-[11px] font-medium uppercase tracking-wider" style={{ color: 'var(--sa-text-secondary)' }}>{user.role.replace('_', ' ')}</p>
-                  </div>
-
-                  <a
-                    href="#"
-                    className={cn(
-                      "flex items-center px-4 py-3 text-sm transition-colors",
-                      user.role === 'super_admin'
-                        ? "text-[var(--sa-text-primary)] hover:bg-[var(--sa-hover)]"
-                        : "text-slate-700 hover:bg-slate-50"
-                    )}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setShowUserMenu(false);
-                      // TODO: Navigate to profile
-                    }}
-                  >
-                    <Icon name="user-circle" className={cn("mr-3", user.role === 'super_admin' ? "text-[var(--sa-primary)]" : "text-slate-400")} size="sm" />
-                    Your Profile
-                  </a>
-                  <a
-                    href="#"
-                    className={cn(
-                      "flex items-center px-4 py-3 text-sm transition-colors",
-                      user.role === 'super_admin'
-                        ? "text-[var(--sa-text-primary)] hover:bg-[var(--sa-hover)]"
-                        : "text-slate-700 hover:bg-slate-50"
-                    )}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setShowUserMenu(false);
-                      // TODO: Navigate to settings
-                    }}
-                  >
-                    <Icon name="cog" className={cn("mr-3", user.role === 'super_admin' ? "text-[var(--sa-primary)]" : "text-slate-400")} size="sm" />
+              <div className="absolute right-0 mt-3 w-64 bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden z-[70] animate-in fade-in slide-in-from-top-3 duration-200">
+                <div className="p-2">
+                  <button className="w-full flex items-center px-4 py-3 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 transition-colors">
+                    <Icon name="user-circle" className="mr-3 text-indigo-500" size="sm" />
+                    My Profile
+                  </button>
+                  <button className="w-full flex items-center px-4 py-3 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 transition-colors">
+                    <Icon name="cog" className="mr-3 text-indigo-500" size="sm" />
                     Settings
-                  </a>
-                  <div 
-                    className="my-1 border-t" 
-                    style={user.role === 'super_admin' ? { borderColor: 'var(--sa-border)' } : { borderColor: '#E2E8F0' }}
-                  />
+                  </button>
+                  <div className="my-2 border-t border-slate-100"></div>
                   {onSwitchRole && (
-                    <a
-                      href="#"
-                      className={cn(
-                        "flex items-center px-4 py-3 text-sm transition-colors",
-                        user.role === 'super_admin'
-                          ? "text-[var(--sa-text-primary)] hover:bg-[var(--sa-hover)]"
-                          : "text-slate-700 hover:bg-slate-50"
-                      )}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setShowUserMenu(false);
-                        onSwitchRole();
-                      }}
+                    <button 
+                      onClick={onSwitchRole}
+                      className="w-full flex items-center px-4 py-3 rounded-xl text-sm font-bold text-indigo-600 hover:bg-indigo-50 transition-colors"
                     >
-                      <Icon name="switch-horizontal" className={cn("mr-3", user.role === 'super_admin' ? "text-[var(--sa-primary)]" : "text-slate-400")} size="sm" />
-                      Switch to {user.role === 'super_admin' ? 'Admin' : 'Super Admin'}
-                    </a>
+                      <Icon name="refresh-cw" className="mr-3" size="sm" />
+                      Switch Role
+                    </button>
                   )}
-                  <a
-                    href="#"
-                    className={cn(
-                      "flex items-center px-4 py-3 text-sm transition-colors",
-                      user.role === 'super_admin'
-                        ? "text-red-400 hover:bg-red-500/10"
-                        : "text-red-600 hover:bg-red-50"
-                    )}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setShowUserMenu(false);
-                      onLogout();
-                    }}
+                  <button 
+                    onClick={onLogout}
+                    className="w-full flex items-center px-4 py-3 rounded-xl text-sm font-bold text-rose-600 hover:bg-rose-50 transition-colors"
                   >
-                    <Icon name="x" className={cn("mr-3", user.role === 'super_admin' ? "text-red-400" : "text-red-400")} size="sm" />
-                    Sign out
-                  </a>
+                    <Icon name="log-out" className="mr-3" size="sm" />
+                    Logout
+                  </button>
                 </div>
               </div>
             )}
           </div>
         </div>
-      </div>
-
-      {/* Mobile search */}
-      <div className="md:hidden px-4 pb-4">
-        <form onSubmit={handleSearch} className="relative">
-          <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-              <Icon name="search" className="text-[#002147]" size="sm" />
-            </div>
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="block w-full pl-12 pr-4 py-3 border border-slate-200 rounded-xl leading-5 bg-slate-50 placeholder-slate-400 focus:outline-none focus:placeholder-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:bg-white transition-all"
-              placeholder="Search..."
-            />
-          </div>
-        </form>
       </div>
     </header>
   );

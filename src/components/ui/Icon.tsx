@@ -50,7 +50,9 @@ import {
   Pencil,
   Package,
   LogOut,
-  ChevronLeft
+  ChevronLeft,
+  BellOff,
+  RefreshCw
 } from 'lucide-react';
 
 interface IconProps {
@@ -123,6 +125,10 @@ const icons: Record<string, React.ComponentType<any>> = {
   cube: Package,
   package: Package,
   logout: LogOut,
+  'log-out': LogOut,
+  'bell-off': BellOff,
+  'building-2': Building2,
+  'refresh-cw': RefreshCw
 };
 
 export const Icon: React.FC<IconProps> = ({ name, className = '', size = 'md' }) => {

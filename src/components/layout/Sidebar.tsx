@@ -172,29 +172,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ user, isOpen, onClose }) => {
           ))}
         </nav>
 
-        {/* Footer */}
-        <div className="flex-shrink-0 px-6 py-4 border-t border-white/10 bg-[#002147]">
-          {/* User info + System Online — merged, no separator */}
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <div className={`w-10 h-10 rounded-xl flex items-center justify-center shadow-lg ${
-                user.role === 'super_admin' ? 'bg-slate-800' : 'bg-gradient-to-br from-blue-500 to-blue-600'
-              }`}>
-                <Icon name="user-circle" className="text-white" size="lg" />
-              </div>
-            </div>
-            <div className="ml-3">
-              <p className="text-sm font-semibold text-white">{user.fullName}</p>
-              <p className="text-xs capitalize px-2 py-0.5 rounded-full inline-block mt-0.5 bg-white/10 text-slate-300">
-                {user.role.replace('_', ' ')}
-              </p>
-              <div className="flex items-center space-x-1 mt-1 text-slate-400">
-                <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                <span className="text-xs">System Online</span>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </>
   );
