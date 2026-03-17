@@ -3,14 +3,17 @@ import globals from 'globals'
 import react from 'eslint-plugin-react'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
+import tseslint from '@typescript-eslint/eslint-plugin'
+import tsparser from '@typescript-eslint/parser'
 
 export default [
   {
-    files: ['**/*.{js,jsx}'],
-    ignores: ['dist'],
+    files: ['**/*.{ts,tsx}'],
+    ignores: ['dist', 'node_modules', '**/*.js', '**/*.jsx'],
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
+      parser: tsparser,
       parserOptions: {
         ecmaVersion: 'latest',
         ecmaFeatures: { jsx: true },
@@ -22,6 +25,7 @@ export default [
       react,
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
+      '@typescript-eslint': tseslint,
     },
     rules: {
       ...js.configs.recommended.rules,
@@ -33,6 +37,10 @@ export default [
         'warn',
         { allowConstantExport: true },
       ],
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-explicit-any': 'warn',
+      'react/prop-types': 'off', // TypeScript handles prop validation
+      'no-unused-vars': 'off', // Use TypeScript version instead
     },
   },
 ]
