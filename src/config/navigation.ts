@@ -116,15 +116,96 @@ export const adminNavigation: NavigationItem[] = [
     ]
   },
   {
-    id: 'admin',
-    label: 'Admin',
-    icon: 'user',
+    id: 'crm',
+    label: 'CRM',
+    icon: 'user-group',
     roles: ['admin'],
     children: [
-      { id: 'adm-company', label: 'Company', path: '/admin/settings/company', roles: ['admin'], icon: 'office-building' },
-      { id: 'adm-users', label: 'Users', path: '/admin/settings/users', roles: ['admin'], icon: 'users' },
-      { id: 'adm-access', label: 'User Access', path: '/admin/settings/roles', roles: ['admin'], icon: 'shield-check' },
-      { id: 'adm-activity', label: 'Activity Log', path: '/admin/settings/activity', roles: ['admin'], icon: 'clipboard-list' },
+      { id: 'crm-dash', label: 'CRM Dashboard', path: '/admin/crm/dashboard', roles: ['admin'], icon: 'dashboard' },
+      { id: 'crm-leads', label: 'Leads Management', path: '/admin/crm/leads', roles: ['admin'], icon: 'users' },
+      { id: 'crm-opps', label: 'Opportunities', path: '/admin/crm/opportunities', roles: ['admin'], icon: 'presentation-chart-line' },
+      { id: 'crm-follows', label: 'Activities & Follow-ups', path: '/admin/crm/follow-ups', roles: ['admin'], icon: 'calendar' },
+    ]
+  },
+  {
+    id: 'hrm',
+    label: 'HRM',
+    icon: 'user-group',
+    roles: ['admin'],
+    children: [
+      { id: 'hrm-dash', label: 'HR Dashboard', path: '/admin/hrm/dashboard', roles: ['admin'], icon: 'dashboard' },
+      { id: 'hrm-employees', label: 'Employee Directory', path: '/admin/hrm/employees', roles: ['admin'], icon: 'users' },
+      { id: 'hrm-attendance', label: 'Attendance Calendar', path: '/admin/hrm/attendance', roles: ['admin'], icon: 'clipboard-check' },
+      { id: 'hrm-leave', label: 'Leave Management', path: '/admin/hrm/leave', roles: ['admin'], icon: 'calendar' },
+      { id: 'hrm-payroll', label: 'Payroll Dashboard', path: '/admin/hrm/payroll', roles: ['admin'], icon: 'cash' },
+    ]
+  },
+  {
+    id: 'projects',
+    label: 'Projects',
+    icon: 'clipboard-list',
+    roles: ['admin'],
+    children: [
+      { id: 'prj-dash', label: 'Project Dashboard', path: '/admin/projects/dashboard', roles: ['admin'], icon: 'dashboard' },
+      { id: 'prj-list', label: 'Project List', path: '/admin/projects/list', roles: ['admin'], icon: 'list' },
+      { id: 'prj-tasks', label: 'Kanban Task Board', path: '/admin/projects/tasks', roles: ['admin'], icon: 'check-circle' },
+      { id: 'prj-collab', label: 'Collaboration', path: '/admin/projects/collaboration', roles: ['admin'], icon: 'chat-alt-2' },
+    ]
+  },
+  {
+    id: 'helpdesk',
+    label: 'Helpdesk',
+    icon: 'support',
+    roles: ['admin'],
+    children: [
+      { id: 'hpd-dash', label: 'Ticket Dashboard', path: '/admin/helpdesk/dashboard', roles: ['admin'], icon: 'dashboard' },
+      { id: 'hpd-tickets', label: 'Ticket Management', path: '/admin/helpdesk/tickets', roles: ['admin'], icon: 'ticket' },
+      { id: 'hpd-sla', label: 'SLA Monitoring', path: '/admin/helpdesk/sla', roles: ['admin'], icon: 'clock' },
+    ]
+  },
+  {
+    id: 'assets',
+    label: 'Assets',
+    icon: 'archive',
+    roles: ['admin'],
+    children: [
+      { id: 'asst-dash', label: 'Asset Dashboard', path: '/admin/assets/dashboard', roles: ['admin'], icon: 'dashboard' },
+      { id: 'asst-list', label: 'Asset Tracking', path: '/admin/assets/tracking', roles: ['admin'], icon: 'list' },
+      { id: 'asst-maint', label: 'Maintenance Logs', path: '/admin/assets/maintenance', roles: ['admin'], icon: 'refresh' },
+    ]
+  },
+  {
+    id: 'logistics',
+    label: 'Logistics',
+    icon: 'truck',
+    roles: ['admin'],
+    children: [
+      { id: 'log-dash', label: 'Logistics Dashboard', path: '/admin/logistics/dashboard', roles: ['admin'], icon: 'dashboard' },
+      { id: 'log-ship', label: 'Shipment Tracking', path: '/admin/logistics/shipments', roles: ['admin'], icon: 'truck' },
+      { id: 'log-del', label: 'Delivery Routes', path: '/admin/logistics/delivery', roles: ['admin'], icon: 'map' },
+    ]
+  },
+  {
+    id: 'billing',
+    label: 'Billing',
+    icon: 'receipt-tax',
+    roles: ['admin'],
+    children: [
+      { id: 'bill-dash', label: 'Billing Dashboard', path: '/admin/billing/dashboard', roles: ['admin'], icon: 'dashboard' },
+      { id: 'bill-inv', label: 'Invoice Management', path: '/admin/billing/invoices', roles: ['admin'], icon: 'document-text' },
+      { id: 'bill-rem', label: 'Payment Reminders', path: '/admin/billing/reminders', roles: ['admin'], icon: 'bell' },
+    ]
+  },
+  {
+    id: 'admin',
+    label: 'Admin Settings',
+    icon: 'cog',
+    roles: ['admin'],
+    children: [
+      { id: 'adm-company', label: 'Company Profile', path: '/admin/settings/company', roles: ['admin'], icon: 'office-building' },
+      { id: 'adm-users', label: 'User Management', path: '/admin/settings/users', roles: ['admin'], icon: 'users' },
+      { id: 'adm-access', label: 'Roles & Permissions', path: '/admin/settings/roles', roles: ['admin'], icon: 'shield-check' },
+      { id: 'adm-activity', label: 'Audit Logs', path: '/admin/settings/activity', roles: ['admin'], icon: 'clipboard-list' },
     ]
   }
 ];

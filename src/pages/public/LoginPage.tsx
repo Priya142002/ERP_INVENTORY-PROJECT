@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { User } from '../../types';
+import logoIcon from '../../assets/logoicon.png';
 
 interface LoginPageProps {
   user: User | null;
@@ -154,8 +155,9 @@ export const LoginPage: React.FC<LoginPageProps> = ({ user, onLogin }) => {
           border-radius: 12px;
           display: flex; align-items: center; justify-content: center;
           box-shadow: 0 4px 18px rgba(0,33,71,0.3);
+          overflow: hidden;
         }
-        .lp-brand-icon svg { width: 24px; height: 24px; }
+        .lp-brand-icon img { width: 32px; height: 32px; object-fit: contain; }
         .lp-brand-name {
           font-family: 'Rajdhani', sans-serif;
           font-size: 22px; font-weight: 700;
@@ -234,6 +236,13 @@ export const LoginPage: React.FC<LoginPageProps> = ({ user, onLogin }) => {
         }
 
         .lp-card-hd { text-align: center; margin-bottom: 30px; }
+        .lp-card-logo {
+          width: 64px; height: 64px; margin: 0 auto 20px;
+          background: #f1f5f9; border-radius: 16px;
+          display: flex; align-items: center; justify-content: center;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        .lp-card-logo img { width: 40px; height: 40px; object-fit: contain; }
         .lp-card-hd h2 {
           font-family: 'Rajdhani', sans-serif;
           font-size: 28px; font-weight: 700;
@@ -385,10 +394,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ user, onLogin }) => {
           <div className="lp-lc">
             <div className="lp-brand">
               <div className="lp-brand-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5"
-                  strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
+                <img src={logoIcon} alt="Logo" />
               </div>
               <div>
                 <div className="lp-brand-name">ERP</div>
@@ -427,6 +433,9 @@ export const LoginPage: React.FC<LoginPageProps> = ({ user, onLogin }) => {
           <div className="lp-card">
 
             <div className="lp-card-hd">
+              <div className="lp-card-logo">
+                <img src={logoIcon} alt="Logo" />
+              </div>
               <h2>Welcome Back</h2>
               <p>Sign in to continue to ERP</p>
             </div>

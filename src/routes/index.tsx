@@ -76,6 +76,31 @@ import {
   TaxSettingsPage,
   NotificationSettingsPage,
   ActivityLogPage,
+  LeadsPage,
+  OpportunitiesPage,
+  FollowUpsPage,
+  CRMDashboard,
+  EmployeesPage,
+  AttendancePage,
+  LeavePage,
+  PayrollPage,
+  HRDashboard,
+  ProjectDashboard,
+  ProjectListPage,
+  TasksPage,
+  CollaborationPage,
+  TicketsPage,
+  SLAPage,
+  HelpdeskDashboard,
+  AssetTrackingPage,
+  MaintenancePage,
+  AssetDashboard,
+  ShipmentListPage,
+  DeliveryPage,
+  LogisticsDashboard,
+  InvoicesPage,
+  RemindersPage,
+  BillingDashboard,
 } from '../pages/admin';
 
 interface AppRoutesProps {
@@ -107,7 +132,7 @@ export const AppRoutes = ({ user, onLogin, onLogout, onSwitchRole }: AppRoutesPr
         <Route index element={<Navigate to="/superadmin/dashboard" replace />} />
 
         {/* Dashboard */}
-        <Route path="dashboard" element={<DashboardPage user={user!} />} />
+        <Route path="dashboard" element={<DashboardPage />} />
 
         {/* Super Admin only routes */}
         {user?.role === 'super_admin' && (
@@ -245,6 +270,66 @@ export const AppRoutes = ({ user, onLogin, onLogout, onSwitchRole }: AppRoutesPr
           <Route path="tax" element={<TaxSettingsPage />} />
           <Route path="notifications" element={<NotificationSettingsPage />} />
           <Route path="activity" element={<ActivityLogPage />} />
+        </Route>
+
+        {/* CRM */}
+        <Route path="crm">
+          <Route index element={<Navigate to="dashboard" replace />} />
+          <Route path="dashboard" element={<CRMDashboard />} />
+          <Route path="leads" element={<LeadsPage />} />
+          <Route path="opportunities" element={<OpportunitiesPage />} />
+          <Route path="follow-ups" element={<FollowUpsPage />} />
+        </Route>
+
+        {/* HRM */}
+        <Route path="hrm">
+          <Route index element={<Navigate to="dashboard" replace />} />
+          <Route path="dashboard" element={<HRDashboard />} />
+          <Route path="employees" element={<EmployeesPage />} />
+          <Route path="attendance" element={<AttendancePage />} />
+          <Route path="leave" element={<LeavePage />} />
+          <Route path="payroll" element={<PayrollPage />} />
+        </Route>
+
+        {/* Projects */}
+        <Route path="projects">
+          <Route index element={<Navigate to="dashboard" replace />} />
+          <Route path="dashboard" element={<ProjectDashboard />} />
+          <Route path="list" element={<ProjectListPage />} />
+          <Route path="tasks" element={<TasksPage />} />
+          <Route path="collaboration" element={<CollaborationPage />} />
+        </Route>
+
+        {/* Helpdesk */}
+        <Route path="helpdesk">
+          <Route index element={<Navigate to="dashboard" replace />} />
+          <Route path="dashboard" element={<HelpdeskDashboard />} />
+          <Route path="tickets" element={<TicketsPage />} />
+          <Route path="sla" element={<SLAPage />} />
+        </Route>
+
+        {/* Assets */}
+        <Route path="assets">
+          <Route index element={<Navigate to="dashboard" replace />} />
+          <Route path="dashboard" element={<AssetDashboard />} />
+          <Route path="tracking" element={<AssetTrackingPage />} />
+          <Route path="maintenance" element={<MaintenancePage />} />
+        </Route>
+
+        {/* Logistics */}
+        <Route path="logistics">
+          <Route index element={<Navigate to="dashboard" replace />} />
+          <Route path="dashboard" element={<LogisticsDashboard />} />
+          <Route path="shipments" element={<ShipmentListPage />} />
+          <Route path="delivery" element={<DeliveryPage />} />
+        </Route>
+
+        {/* Billing */}
+        <Route path="billing">
+          <Route index element={<Navigate to="dashboard" replace />} />
+          <Route path="dashboard" element={<BillingDashboard />} />
+          <Route path="invoices" element={<InvoicesPage />} />
+          <Route path="reminders" element={<RemindersPage />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />

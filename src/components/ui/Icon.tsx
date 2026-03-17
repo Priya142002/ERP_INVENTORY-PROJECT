@@ -21,16 +21,46 @@ import {
   ClipboardList, 
   ChevronUp,
   ShieldCheck,
-  Building
+  Building,
+  Archive,
+  ShoppingCart,
+  BarChart4,
+  BookOpen,
+  Calendar,
+  Folder,
+  CheckCircle,
+  MessageSquare,
+  LifeBuoy,
+  Ticket,
+  Clock,
+  Database,
+  Truck,
+  Map,
+  Receipt,
+  RotateCcw,
+  Banknote,
+  PieChart,
+  ArrowLeftRight,
+  FileText,
+  Copy,
+  Undo,
+  ClipboardCheck,
+  BarChart,
+  Undo2,
+  Pencil,
+  Package,
+  LogOut,
+  ChevronLeft
 } from 'lucide-react';
 
 interface IconProps {
   name: string;
   className?: string;
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'xs' | 'sm' | 'md' | 'lg';
 }
 
 const iconSizes = {
+  xs: 'w-3.5 h-3.5',
   sm: 'w-4 h-4',
   md: 'w-5 h-5',
   lg: 'w-6 h-6'
@@ -40,6 +70,7 @@ const icons: Record<string, React.ComponentType<any>> = {
   dashboard: LayoutDashboard,
   building: Building2,
   users: Users,
+  'user-group': Users,
   'credit-card': CreditCard,
   cog: Settings,
   list: List,
@@ -49,17 +80,49 @@ const icons: Record<string, React.ComponentType<any>> = {
   x: X,
   'chevron-down': ChevronDown,
   'chevron-right': ChevronRight,
+  'chevron-left': ChevronLeft,
   bell: Bell,
   search: Search,
   sun: Sun,
   moon: Moon,
   'user-circle': UserCircle,
   'chart-bar': BarChart3,
-  'document-text': ClipboardList, // Mapping to ClipboardList for Audit Logs
+  'document-text': FileText,
   'clipboard-list': ClipboardList,
   'chevron-up': ChevronUp,
   'shield-check': ShieldCheck,
-  'building-simple': Building
+  'building-simple': Building,
+  'office-building': Building2,
+  archive: Archive,
+  'shopping-cart': ShoppingCart,
+  'presentation-chart-line': BarChart4,
+  'book-open': BookOpen,
+  calendar: Calendar,
+  folder: Folder,
+  'check-circle': CheckCircle,
+  'chat-alt-2': MessageSquare,
+  support: LifeBuoy,
+  ticket: Ticket,
+  clock: Clock,
+  database: Database,
+  truck: Truck,
+  map: Map,
+  'receipt-tax': Receipt,
+  refresh: RotateCcw,
+  cash: Banknote,
+  'chart-pie': PieChart,
+  'switch-horizontal': ArrowLeftRight,
+  'file-text': FileText,
+  'document-duplicate': Copy,
+  reply: Undo,
+  'clipboard-check': ClipboardCheck,
+  'document-report': BarChart,
+  'list-bullet': List,
+  'receipt-refund': Undo2,
+  'pencil-alt': Pencil,
+  cube: Package,
+  package: Package,
+  logout: LogOut,
 };
 
 export const Icon: React.FC<IconProps> = ({ name, className = '', size = 'md' }) => {

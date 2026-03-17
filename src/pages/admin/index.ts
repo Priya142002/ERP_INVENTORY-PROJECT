@@ -75,3 +75,14 @@ export * from './settings/RolesPermissionsPage';
 export * from './settings/TaxSettingsPage';
 export * from './settings/NotificationSettingsPage';
 export * from './settings/ActivityLogPage';
+
+// Business Modules
+export * from './crm';
+export * from './hrm';
+export * from './projects';
+export * from './helpdesk';
+
+// Advanced Modules
+export * from './assets';
+export * from './logistics';
+export * from './billing';

@@ -158,7 +158,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ user, isOpen, onClose }) => {
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto overflow-x-hidden custom-scrollbar">
+        <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto overflow-x-hidden hide-scrollbar">
           {navigationItems.map((item) => (
             <NavigationItemComponent
               key={item.id}
