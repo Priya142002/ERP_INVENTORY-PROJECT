@@ -17,7 +17,6 @@ import {
   Legend
 } from 'recharts';
 import { Icon } from '../ui/Icon';
-import Badge from '../ui/Badge';
 
 // Common Chart Colors
 const COLORS = ['#6366f1', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#0ea5e9'];
@@ -74,25 +73,27 @@ interface StatCardProps {
 }
 
 export const StatCard: React.FC<StatCardProps> = ({ label, value, trend, trendUp, icon, color, sparkData }) => (
-  <div className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-md transition-all duration-300 group">
+  <div className={`p-6 rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group relative overflow-hidden ${color}/5 bg-white`}>
+    <div className={`absolute top-0 left-0 right-0 h-1.5 ${color} opacity-100`} />
     <div className="flex items-center justify-between mb-5">
-      <div className={`w-12 h-12 ${color}/10 flex items-center justify-center ${color.replace('bg-', 'text-')} rounded-2xl shadow-sm border border-current/5`}>
+      <div className={`w-12 h-12 ${color}/10 flex items-center justify-center ${color.replace('bg-', 'text-')} rounded-2xl shadow-sm border border-current/5 group-hover:scale-110 transition-transform`}>
         <Icon name={icon} size="sm" />
       </div>
       <Sparkline data={sparkData} color={color === 'bg-emerald-500' ? '#10b981' : color === 'bg-blue-500' ? '#3b82f6' : color === 'bg-indigo-500' ? '#6366f1' : '#f43f5e'} />
     </div>
     <div className="flex items-end justify-between">
       <div>
-        <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-1">{label}</p>
-        <h2 className="text-2xl font-bold text-slate-900 tracking-tight">{value}</h2>
-        <div className="flex items-center gap-1.5 mt-1">
-          <span className={`text-[10px] font-bold flex items-center ${trendUp ? 'text-emerald-600' : 'text-rose-600'}`}>
+        <p className="text-slate-500 text-[11px] font-bold uppercase tracking-widest mb-1 group-hover:text-slate-700 transition-colors">{label}</p>
+        <h2 className="text-2xl font-bold text-slate-900 tracking-tight group-hover:text-[#002147] transition-colors">{value}</h2>
+        <div className="flex items-center gap-1.5 mt-2">
+          <span className={`text-[10px] font-bold flex items-center px-1.5 py-0.5 rounded-md bg-white border border-slate-100 shadow-sm ${trendUp ? 'text-emerald-600' : 'text-rose-600'}`}>
             {trendUp ? '↑' : '↓'} {trend}
           </span>
-          <span className="text-[10px] text-slate-400 font-medium">vs last month</span>
+          <span className="text-[10px] text-slate-400 font-medium whitespace-nowrap">vs last month</span>
         </div>
       </div>
     </div>
+    <div className={`absolute bottom-0 right-0 w-24 h-24 ${color} opacity-[0.03] rounded-full translate-x-8 translate-y-8 group-hover:scale-150 transition-transform duration-500`} />
   </div>
 );
 
@@ -214,7 +215,7 @@ export const DistributionDonutChart: React.FC<{ data: any[] }> = ({ data }) => (
           animationDuration={1500}
         >
           {data.map((_, index) => (
-            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} cornerRadius={10} />
+            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
           ))}
         </Pie>
         <Tooltip content={<CustomTooltip />} />

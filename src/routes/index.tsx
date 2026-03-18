@@ -88,19 +88,36 @@ import {
   ProjectDashboard,
   ProjectListPage,
   TasksPage,
-  CollaborationPage,
+  TimesheetPage,
+  ClientSyncPage,
   TicketsPage,
   SLAPage,
   HelpdeskDashboard,
-  AssetTrackingPage,
-  MaintenancePage,
   AssetDashboard,
+  AssetManagePage,
+  AssetDepreciationPage,
+  MaintenancePage,
+  AssetDisposalPage,
+  AssetReportsPage,
   ShipmentListPage,
   DeliveryPage,
+  LogisticsOrderPage,
+  CarrierPartnersPage,
+  CustomerFeedbackPage,
   LogisticsDashboard,
   InvoicesPage,
   RemindersPage,
   BillingDashboard,
+  ProductionDashboard,
+  BOMPage,
+  ProductionPlanningPage,
+  WorkOrdersPage,
+  JobCardsPage,
+  MaterialIssuePage,
+  FinishedGoodsPage,
+  QualityCheckPage,
+  MachineTrackingPage,
+  ProductionReportsPage,
 } from '../pages/admin';
 
 interface AppRoutesProps {
@@ -260,6 +277,7 @@ export const AppRoutes = ({ user, onLogin, onLogout, onSwitchRole }: AppRoutesPr
           <Route path="purchase" element={<PurchaseReportsPage />} />
           <Route path="inventory" element={<InventoryReportsPage />} />
           <Route path="financial" element={<FinancialReportsPage />} />
+          <Route path="production" element={<ProductionReportsPage />} />
         </Route>
 
         {/* Settings */}
@@ -297,7 +315,8 @@ export const AppRoutes = ({ user, onLogin, onLogout, onSwitchRole }: AppRoutesPr
           <Route path="dashboard" element={<ProjectDashboard />} />
           <Route path="list" element={<ProjectListPage />} />
           <Route path="tasks" element={<TasksPage />} />
-          <Route path="collaboration" element={<CollaborationPage />} />
+          <Route path="timesheets" element={<TimesheetPage />} />
+          <Route path="client-sync" element={<ClientSyncPage />} />
         </Route>
 
         {/* Helpdesk */}
@@ -312,8 +331,11 @@ export const AppRoutes = ({ user, onLogin, onLogout, onSwitchRole }: AppRoutesPr
         <Route path="assets">
           <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<AssetDashboard />} />
-          <Route path="tracking" element={<AssetTrackingPage />} />
+          <Route path="manage" element={<AssetManagePage />} />
+          <Route path="depreciation" element={<AssetDepreciationPage />} />
           <Route path="maintenance" element={<MaintenancePage />} />
+          <Route path="disposal" element={<AssetDisposalPage />} />
+          <Route path="reports" element={<AssetReportsPage />} />
         </Route>
 
         {/* Logistics */}
@@ -322,6 +344,23 @@ export const AppRoutes = ({ user, onLogin, onLogout, onSwitchRole }: AppRoutesPr
           <Route path="dashboard" element={<LogisticsDashboard />} />
           <Route path="shipments" element={<ShipmentListPage />} />
           <Route path="delivery" element={<DeliveryPage />} />
+          <Route path="orders" element={<LogisticsOrderPage />} />
+          <Route path="carriers" element={<CarrierPartnersPage />} />
+          <Route path="feedback" element={<CustomerFeedbackPage />} />
+        </Route>
+
+        {/* Production */}
+        <Route path="production">
+          <Route index element={<Navigate to="dashboard" replace />} />
+          <Route path="dashboard" element={<ProductionDashboard />} />
+          <Route path="bom" element={<BOMPage />} />
+          <Route path="planning" element={<ProductionPlanningPage />} />
+          <Route path="work-orders" element={<WorkOrdersPage />} />
+          <Route path="job-cards" element={<JobCardsPage />} />
+          <Route path="material-issue" element={<MaterialIssuePage />} />
+          <Route path="finished-goods" element={<FinishedGoodsPage />} />
+          <Route path="quality-check" element={<QualityCheckPage />} />
+          <Route path="machines" element={<MachineTrackingPage />} />
         </Route>
 
         {/* Billing */}

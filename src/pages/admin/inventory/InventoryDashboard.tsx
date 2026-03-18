@@ -20,6 +20,8 @@ const STAT_CARDS = [
     value: "1,248",
     icon: <Package size={24} />,
     color: "bg-indigo-600",
+    hoverColor: "group-hover:bg-indigo-50/30",
+    accentColor: "group-hover:border-indigo-600",
     trend: "+12.5% Growth",
     trendColor: "text-emerald-500",
     description: "Successfully indexed SKUs"
@@ -29,6 +31,8 @@ const STAT_CARDS = [
     value: "42",
     icon: <AlertTriangle size={24} />,
     color: "bg-amber-500",
+    hoverColor: "group-hover:bg-amber-50/30",
+    accentColor: "group-hover:border-amber-500",
     trend: "8 Attention Items",
     trendColor: "text-amber-600",
     description: "Approaching safety stock"
@@ -38,6 +42,8 @@ const STAT_CARDS = [
     value: "15",
     icon: <RefreshCcw size={24} />,
     color: "bg-rose-500",
+    hoverColor: "group-hover:bg-rose-50/30",
+    accentColor: "group-hover:border-rose-600",
     trend: "Critical Priority",
     trendColor: "text-rose-600",
     description: "Stockouts imminent"
@@ -46,9 +52,11 @@ const STAT_CARDS = [
     title: "Zero Inventory",
     value: "05",
     icon: <Archive size={24} />,
-    color: "bg-slate-700",
+    color: "bg-slate-800",
+    hoverColor: "group-hover:bg-slate-50/50",
+    accentColor: "group-hover:border-slate-800",
     trend: "System Depleted",
-    trendColor: "text-slate-400",
+    trendColor: "text-slate-500",
     description: "Currently unavailable"
   }
 ];
@@ -100,21 +108,23 @@ export const InventoryDashboard: React.FC = () => {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: index * 0.1 }}
-            className="bg-white p-4 md:p-5 rounded-xl md:rounded-[1.5rem] border border-slate-100 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 group cursor-pointer"
+            className={`p-4 md:p-5 rounded-xl md:rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group cursor-pointer relative overflow-hidden ${stat.color.replace('bg-', 'bg-')}/5 bg-white`}
           >
+            <div className={`absolute top-0 left-0 right-0 h-1.5 ${stat.color} opacity-100`} />
             <div className="flex items-center justify-between mb-4">
-              <div className={`w-10 h-10 ${stat.color}/10 flex items-center justify-center ${stat.color.replace('bg-', 'text-')} rounded-lg md:rounded-xl shadow-sm border border-current/10 group-hover:scale-105 transition-transform`}>
+              <div className={`w-10 h-10 ${stat.color}/10 flex items-center justify-center ${stat.color.replace('bg-', 'text-')} rounded-lg md:rounded-xl shadow-sm border border-current/10 group-hover:scale-110 transition-transform`}>
                 {React.cloneElement(stat.icon as React.ReactElement, { size: 20 })}
               </div>
-              <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full tracking-wider uppercase bg-slate-50 ${stat.trendColor}`}>
+              <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full tracking-wider uppercase bg-white/80 backdrop-blur-sm shadow-sm ${stat.trendColor} border border-slate-100 transition-colors`}>
                 {stat.trend}
               </span>
             </div>
             <div>
-              <h3 className="text-slate-400 text-[9px] font-bold uppercase tracking-widest mb-0.5">{stat.title}</h3>
-              <p className="text-2xl font-bold text-slate-900 tracking-tight group-hover:text-[#334e68] transition-colors">{stat.value}</p>
-              <p className="text-[9px] text-slate-400 mt-1.5 font-medium italic opacity-0 group-hover:opacity-100 transition-opacity">"{stat.description}"</p>
+              <h3 className="text-slate-500 text-[9px] font-bold uppercase tracking-widest mb-1 group-hover:text-slate-700 transition-colors">{stat.title}</h3>
+              <p className="text-2xl font-bold text-slate-900 tracking-tight group-hover:text-[#002147] transition-colors">{stat.value}</p>
+              <p className="text-[9px] text-slate-400 mt-2 font-medium italic opacity-60 group-hover:opacity-100 transition-opacity leading-relaxed">"{stat.description}"</p>
             </div>
+            <div className={`absolute bottom-0 right-0 w-24 h-24 ${stat.color} opacity-[0.03] rounded-full translate-x-8 translate-y-8 group-hover:scale-150 transition-transform duration-500`} />
           </motion.div>
         ))}
       </div>
@@ -134,31 +144,31 @@ export const InventoryDashboard: React.FC = () => {
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-slate-50/50 text-slate-400 text-[10px] uppercase font-bold tracking-[0.15em]">
-                  <th className="px-4 md:px-8 py-4 md:py-5">Product Details</th>
+                <tr className="bg-[#002147] text-white text-[10px] uppercase font-bold tracking-[0.15em]">
+                  <th className="px-4 md:px-8 py-4 md:py-5 first:rounded-tl-none">Product Details</th>
                   <th className="px-4 md:px-6 py-4 md:py-5 text-center">Velocity</th>
-                  <th className="px-4 md:px-6 py-4 md:py-5 text-right pr-4 md:pr-8">Revenue Generated</th>
+                  <th className="px-4 md:px-6 py-4 md:py-5 text-right pr-4 md:pr-8 last:rounded-tr-none">Revenue Generated</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-50">
                 {TOP_SELLING_TODAY.map((item) => (
-                  <tr key={item.id} className="hover:bg-slate-50/20 transition-all group">
+                  <tr key={item.id} className="hover:bg-indigo-50/30 transition-all group cursor-pointer border-l-4 border-l-transparent hover:border-l-indigo-600">
                     <td className="px-4 md:px-8 py-4 md:py-5">
                       <div className="flex items-center">
                         <div className="min-w-0">
-                          <div className="text-sm font-bold text-slate-900 group-hover:text-[#334e68] transition-colors truncate">{item.name}</div>
-                          <div className="text-[10px] text-slate-400 font-bold uppercase tracking-widest truncate">{item.category}</div>
+                          <div className="text-sm font-bold text-slate-900 group-hover:text-indigo-600 transition-colors truncate">{item.name}</div>
+                          <div className="text-[10px] text-slate-400 font-bold uppercase tracking-widest truncate group-hover:text-slate-500 transition-colors">{item.category}</div>
                         </div>
                       </div>
                     </td>
                     <td className="px-4 md:px-6 py-4 md:py-5 text-center">
-                      <div className="inline-flex items-center gap-1.5 px-2 py-1 bg-emerald-50 text-emerald-600 rounded-lg border border-emerald-100/50">
+                      <div className="inline-flex items-center gap-1.5 px-2 py-1 bg-emerald-50 text-emerald-600 rounded-lg border border-emerald-100/50 group-hover:bg-emerald-100/50 transition-colors">
                         <ArrowUpRight size={10} className="font-bold md:size-[12px]" />
                         <span className="text-[10px] md:text-[11px] font-bold">{item.trend}</span>
                       </div>
                     </td>
                     <td className="px-4 md:px-6 py-4 md:py-5 text-right pr-4 md:pr-8">
-                      <span className="text-sm font-mono font-bold text-slate-900">{item.amount}</span>
+                      <span className="text-sm font-mono font-bold text-slate-900 group-hover:text-indigo-700 transition-colors">{item.amount}</span>
                       <div className="text-[9px] text-slate-400 font-bold tracking-tighter mt-0.5">{item.count} Units</div>
                     </td>
                   </tr>

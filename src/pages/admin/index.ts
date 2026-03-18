@@ -67,6 +67,7 @@ export * from './reports/SalesReportsPage';
 export * from './reports/PurchaseReportsPage';
 export * from './reports/InventoryReportsPage';
 export * from './reports/FinancialReportsPage';
+export * from './reports/ProductionReportsPage';
 
 // Settings
 export * from './settings/CompanySettingsPage';
@@ -86,3 +87,4 @@ export * from './helpdesk';
 export * from './assets';
 export * from './logistics';
 export * from './billing';
+export * from './production';

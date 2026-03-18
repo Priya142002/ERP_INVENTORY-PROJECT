@@ -2,41 +2,86 @@ import React from 'react';
 import { PageTemplate } from '../PageTemplate';
 import { Icon } from '../../../components/ui/Icon';
 import Badge from '../../../components/ui/Badge';
+import { motion } from 'framer-motion';
+import { Calendar } from 'lucide-react';
+import Button from '../../../components/ui/Button';
 
 export const HRDashboard: React.FC = () => {
   const stats = [
-    { label: 'Total Employees', value: '428', icon: 'users', color: 'bg-indigo-500', trend: '+14' },
-    { label: 'Today Presence', value: '92%', icon: 'clipboard-check', color: 'bg-emerald-500', trend: 'Active' },
-    { label: 'Leave Requests', value: '12', icon: 'calendar', color: 'bg-amber-500', trend: 'Pending' },
-    { label: 'Net Payroll', value: '$245k', icon: 'cash', color: 'bg-rose-500', trend: 'Monthly' },
+    { label: 'Total Employees', value: '428', icon: 'users', color: 'bg-indigo-600', trend: '+14 New' },
+    { label: 'Today Presence', value: '92%', icon: 'clipboard-check', color: 'bg-emerald-600', trend: 'Optimal' },
+    { label: 'Leave Requests', value: '12', icon: 'calendar', color: 'bg-amber-500', trend: '8 Pending' },
+    { label: 'Net Payroll', value: '$245k', icon: 'cash', color: 'bg-rose-600', trend: 'Oct Cycle' },
   ];
 
   return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {stats.map((stat, i) => (
-          <div key={i} className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm">
-            <div className="flex items-center justify-between mb-4">
-              <div className={`w-12 h-12 ${stat.color}/10 rounded-2xl flex items-center justify-center ${stat.color.replace('bg-', 'text-')}`}>
-                <Icon name={stat.icon} size="md" />
-              </div>
-              <Badge variant={stat.trend === 'Pending' ? 'warning' : 'success'} className="text-[10px]">{stat.trend}</Badge>
-            </div>
-            <p className="text-slate-500 text-xs font-bold uppercase tracking-widest">{stat.label}</p>
-            <h2 className="text-2xl font-bold text-slate-900 mt-1">{stat.value}</h2>
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="space-y-8"
+    >
+      {/* Page Title Section */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900">HR Intelligence</h1>
+        </div>
+        <div className="flex flex-row items-center gap-2 md:gap-3">
+          <div className="flex items-center gap-2 md:gap-2.5 bg-white border border-slate-200 px-3 md:px-4 py-1.5 md:py-2 rounded-xl shadow-sm">
+            <Calendar size={14} className="text-blue-600" />
+            <span className="text-[10px] md:text-xs font-bold text-slate-600">Cycle: Mar 2026</span>
           </div>
+          <Button className="bg-[#002147] hover:bg-[#003366] text-white px-6 h-10 text-[10px] md:text-xs font-bold rounded-xl border-none shadow-lg shadow-blue-900/10 active:scale-[0.98] transition-all">
+            Generate Meta-Report
+          </Button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
+        {stats.map((stat, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: i * 0.1 }}
+            className={`p-4 md:p-5 rounded-xl md:rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group cursor-pointer relative overflow-hidden ${stat.color}/5 bg-white`}
+          >
+            <div className={`absolute top-0 left-0 right-0 h-1.5 ${stat.color} opacity-100`} />
+            <div className="flex items-center justify-between mb-4">
+              <div className={`w-10 h-10 ${stat.color}/10 flex items-center justify-center ${stat.color.replace('bg-', 'text-')} rounded-lg md:rounded-xl shadow-sm border border-current/10 group-hover:scale-110 transition-transform`}>
+                <Icon name={stat.icon} size="sm" />
+              </div>
+              <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full tracking-wider uppercase bg-white/80 backdrop-blur-sm shadow-sm ${i === 2 ? 'text-amber-600' : 'text-emerald-600'} border border-slate-100 transition-colors`}>
+                {stat.trend}
+              </span>
+            </div>
+            <div>
+              <h3 className="text-slate-500 text-[9px] font-bold uppercase tracking-widest mb-1 group-hover:text-slate-700 transition-colors uppercase tracking-[0.1em]">{stat.label}</h3>
+              <p className="text-2xl font-bold text-slate-900 tracking-tight group-hover:text-[#002147] transition-colors">{stat.value}</p>
+              <div className="flex items-center gap-1.5 mt-2">
+                <span className="text-[9px] text-slate-400 font-medium italic opacity-60 group-hover:opacity-100 transition-opacity whitespace-nowrap">vs last cycle</span>
+              </div>
+            </div>
+            <div className={`absolute bottom-0 right-0 w-24 h-24 ${stat.color} opacity-[0.03] rounded-full translate-x-8 translate-y-8 group-hover:scale-150 transition-transform duration-500`} />
+          </motion.div>
         ))}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white p-8 rounded-[2rem] border border-slate-100 shadow-sm">
-          <h3 className="text-lg font-bold text-slate-900 mb-6">Attendance Trends</h3>
-          <div className="space-y-4">
+        <div className="bg-white p-8 rounded-[2rem] border border-slate-100 shadow-sm relative overflow-hidden group">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-50/50 rounded-full translate-x-10 -translate-y-10 group-hover:scale-150 transition-transform duration-700" />
+          <h3 className="text-lg font-bold text-slate-900 mb-6 font-bold uppercase tracking-[0.1em] text-slate-400 text-xs">Attendance Trends</h3>
+          <div className="space-y-4 relative z-10">
             {[1, 2, 3, 4, 5].map(i => (
               <div key={i} className="flex items-center gap-4">
                 <span className="w-12 text-[10px] font-bold text-slate-400">Day {i}</span>
-                <div className="flex-1 h-3 bg-slate-50 rounded-full overflow-hidden">
-                  <div className="h-full bg-indigo-600 rounded-full" style={{ width: `${80 + i*3}%` }}></div>
+                <div className="flex-1 h-3 bg-slate-50 rounded-full overflow-hidden border border-slate-100 p-0.5">
+                  <motion.div 
+                    initial={{ width: 0 }}
+                    whileInView={{ width: `${80 + i*3}%` }}
+                    transition={{ duration: 1, ease: "easeOut" }}
+                    className="h-full bg-indigo-600 rounded-full shadow-sm"
+                  />
                 </div>
                 <span className="text-xs font-bold text-slate-700">{80 + i*3}%</span>
               </div>
@@ -44,17 +89,18 @@ export const HRDashboard: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-white p-8 rounded-[2rem] border border-slate-100 shadow-sm">
-          <h3 className="text-lg font-bold text-slate-900 mb-6">Department Distribution</h3>
-          <div className="flex flex-wrap gap-4">
+        <div className="bg-white p-8 rounded-[2rem] border border-slate-100 shadow-sm relative overflow-hidden group">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-50/50 rounded-full translate-x-10 -translate-y-10 group-hover:scale-150 transition-transform duration-700" />
+          <h3 className="text-lg font-bold text-slate-900 mb-6 font-bold uppercase tracking-[0.1em] text-slate-400 text-xs">Department Distribution</h3>
+          <div className="flex flex-wrap gap-4 relative z-10">
             {[
               { label: 'Engineering', count: 124, color: 'bg-blue-500' },
               { label: 'Marketing', count: 42, color: 'bg-purple-500' },
               { label: 'Sales', count: 86, color: 'bg-emerald-500' },
               { label: 'Support', count: 34, color: 'bg-amber-500' },
             ].map((dept, i) => (
-              <div key={i} className="flex-1 min-w-[140px] p-4 bg-slate-50 rounded-3xl border border-slate-100 italic">
-                <div className={`w-2 h-2 rounded-full ${dept.color} mb-2`}></div>
+              <div key={i} className="flex-1 min-w-[140px] p-4 bg-slate-50/50 rounded-3xl border border-slate-100 hover:bg-white hover:shadow-md transition-all cursor-pointer group/dept">
+                <div className={`w-2 h-2 rounded-full ${dept.color} mb-2 group-hover/dept:scale-150 transition-transform`}></div>
                 <p className="text-xs font-bold text-slate-900">{dept.label}</p>
                 <p className="text-[11px] text-slate-500">{dept.count} Employees</p>
               </div>
@@ -62,7 +108,7 @@ export const HRDashboard: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

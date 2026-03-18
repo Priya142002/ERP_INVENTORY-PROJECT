@@ -76,13 +76,13 @@ export const AdminDashboardPage: React.FC = () => {
       {/* Row 1: Operational Tiles (Enhanced existing feature) */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {operationalOverview.map((op, i) => (
-          <div key={i} className="group relative bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden">
-            <div className={`absolute top-0 right-0 w-24 h-24 ${op.bg} opacity-20 rounded-full translate-x-8 -translate-y-8 group-hover:scale-150 transition-transform`} />
-            <div className={`w-12 h-12 ${op.bg} rounded-2xl flex items-center justify-center ${op.color} mb-4 relative z-10`}>
+          <div key={i} className="group relative bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden cursor-pointer">
+            <div className={`absolute top-0 right-0 w-24 h-24 ${op.bg} opacity-10 rounded-full translate-x-8 -translate-y-8 group-hover:scale-150 transition-transform duration-500`} />
+            <div className={`w-12 h-12 ${op.bg} rounded-2xl flex items-center justify-center ${op.color} mb-4 relative z-10 group-hover:scale-110 transition-transform shadow-sm`}>
               <Icon name={op.icon} size="md" />
             </div>
-            <h3 className="text-sm font-bold text-slate-900 mb-1 relative z-10">{op.title}</h3>
-            <p className="text-xs text-slate-500 relative z-10 leading-relaxed">{op.desc}</p>
+            <h3 className="text-sm font-bold text-slate-900 mb-1 relative z-10 group-hover:text-[#002147] transition-colors">{op.title}</h3>
+            <p className="text-xs text-slate-500 relative z-10 leading-relaxed group-hover:text-slate-600 transition-colors">{op.desc}</p>
           </div>
         ))}
       </div>
@@ -127,7 +127,7 @@ export const AdminDashboardPage: React.FC = () => {
           <div className="overflow-x-auto">
             <table className="w-full text-left">
               <thead>
-                <tr className="bg-slate-50/50 text-slate-400 text-[10px] uppercase font-bold tracking-[0.1em]">
+                <tr className="bg-[#002147] text-white text-[10px] uppercase font-bold tracking-[0.1em]">
                   <th className="px-8 py-5">Entity / Reference</th>
                   <th className="px-6 py-5">Type</th>
                   <th className="px-6 py-5">Amount</th>
@@ -136,30 +136,30 @@ export const AdminDashboardPage: React.FC = () => {
               </thead>
               <tbody className="divide-y divide-slate-50">
                 {[1, 2, 3, 4, 5].map((i) => (
-                  <tr key={i} className="hover:bg-slate-50/20 transition-all group cursor-pointer border-l-4 border-l-transparent hover:border-l-[#002147]">
+                  <tr key={i} className="hover:bg-indigo-50/30 transition-all group cursor-pointer border-l-4 border-l-transparent hover:border-l-indigo-600">
                     <td className="px-8 py-5">
                       <div className="flex items-center gap-3">
-                        <div className={`w-9 h-9 rounded-xl flex items-center justify-center text-xs font-bold ${
+                        <div className={`w-9 h-9 rounded-xl flex items-center justify-center text-xs font-bold transition-transform group-hover:scale-110 ${
                           i % 2 === 0 ? 'bg-indigo-50 text-indigo-600' : 'bg-emerald-50 text-emerald-600'
                         }`}>
                           {i % 2 === 0 ? 'PU' : 'SA'}
                         </div>
                         <div className="overflow-hidden">
-                          <p className="text-sm font-bold text-slate-900 truncate">#TRX-982{i}4</p>
-                          <p className="text-[10px] text-slate-400 font-medium">Global Supply Corp • 12 Oct</p>
+                          <p className="text-sm font-bold text-slate-900 truncate group-hover:text-indigo-600 transition-colors">#TRX-982{i}4</p>
+                          <p className="text-[10px] text-slate-400 font-medium group-hover:text-slate-500">Global Supply Corp • 12 Oct</p>
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-5">
-                      <span className="text-xs font-semibold text-slate-600">{i % 2 === 0 ? 'Purchase' : 'Sales'}</span>
+                      <span className="text-xs font-semibold text-slate-600 group-hover:text-slate-800 transition-colors">{i % 2 === 0 ? 'Purchase' : 'Sales'}</span>
                     </td>
                     <td className="px-6 py-5">
-                      <span className={`text-sm font-bold ${i % 2 === 0 ? 'text-rose-600' : 'text-emerald-600'}`}>
+                      <span className={`text-sm font-bold transition-colors ${i % 2 === 0 ? 'text-rose-600 group-hover:text-rose-700' : 'text-emerald-600 group-hover:text-emerald-700'}`}>
                         {i % 2 === 0 ? '-' : '+'}${245 * i}.00
                       </span>
                     </td>
                     <td className="px-6 py-5 text-right pr-8">
-                      <Badge variant={i % 3 === 0 ? 'warning' : 'success'} className="px-3 py-1 text-[9px] font-bold rounded-lg uppercase tracking-wider">
+                      <Badge variant={i % 3 === 0 ? 'warning' : 'success'} className="px-3 py-1 text-[9px] font-bold rounded-lg uppercase tracking-wider group-hover:shadow-sm transition-all">
                         {i % 3 === 0 ? 'Pending' : 'Verified'}
                       </Badge>
                     </td>

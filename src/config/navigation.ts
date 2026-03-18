@@ -146,10 +146,11 @@ export const adminNavigation: NavigationItem[] = [
     icon: 'clipboard-list',
     roles: ['admin'],
     children: [
-      { id: 'prj-dash', label: 'Project Dashboard', path: '/admin/projects/dashboard', roles: ['admin'], icon: 'dashboard' },
-      { id: 'prj-list', label: 'Project List', path: '/admin/projects/list', roles: ['admin'], icon: 'list' },
-      { id: 'prj-tasks', label: 'Kanban Task Board', path: '/admin/projects/tasks', roles: ['admin'], icon: 'check-circle' },
-      { id: 'prj-collab', label: 'Collaboration', path: '/admin/projects/collaboration', roles: ['admin'], icon: 'chat-alt-2' },
+      { id: 'prj-dash', label: 'Project Dynamics', path: '/admin/projects/dashboard', roles: ['admin'], icon: 'dashboard' },
+      { id: 'prj-list', label: 'Projects & Status', path: '/admin/projects/list', roles: ['admin'], icon: 'list' },
+      { id: 'prj-tasks', label: 'Task Board', path: '/admin/projects/tasks', roles: ['admin'], icon: 'check-circle' },
+      { id: 'prj-time', label: 'Timesheets & Expenses', path: '/admin/projects/timesheets', roles: ['admin'], icon: 'clock' },
+      { id: 'prj-client', label: 'Client Sync (Updates)', path: '/admin/projects/client-sync', roles: ['admin'], icon: 'chat-alt-2' },
     ]
   },
   {
@@ -169,9 +170,12 @@ export const adminNavigation: NavigationItem[] = [
     icon: 'archive',
     roles: ['admin'],
     children: [
-      { id: 'asst-dash', label: 'Asset Dashboard', path: '/admin/assets/dashboard', roles: ['admin'], icon: 'dashboard' },
-      { id: 'asst-list', label: 'Asset Tracking', path: '/admin/assets/tracking', roles: ['admin'], icon: 'list' },
-      { id: 'asst-maint', label: 'Maintenance Logs', path: '/admin/assets/maintenance', roles: ['admin'], icon: 'refresh' },
+      { id: 'ast-dash', label: 'Asset Intelligence', path: '/admin/assets/dashboard', roles: ['admin'], icon: 'dashboard' },
+      { id: 'ast-manage', label: 'Management & Allocation', path: '/admin/assets/manage', roles: ['admin'], icon: 'list' },
+      { id: 'ast-depr', label: 'Depreciation Engine', path: '/admin/assets/depreciation', roles: ['admin'], icon: 'chart-bar' },
+      { id: 'ast-maint', label: 'Maintenance Logs', path: '/admin/assets/maintenance', roles: ['admin'], icon: 'refresh' },
+      { id: 'ast-disp', label: 'Asset Disposal', path: '/admin/assets/disposal', roles: ['admin'], icon: 'trash' },
+      { id: 'ast-rep', label: 'Asset Reports', path: '/admin/assets/reports', roles: ['admin'], icon: 'document-report' },
     ]
   },
   {
@@ -180,9 +184,30 @@ export const adminNavigation: NavigationItem[] = [
     icon: 'truck',
     roles: ['admin'],
     children: [
-      { id: 'log-dash', label: 'Logistics Dashboard', path: '/admin/logistics/dashboard', roles: ['admin'], icon: 'dashboard' },
+      { id: 'log-dash', label: 'Fleet Intelligence', path: '/admin/logistics/dashboard', roles: ['admin'], icon: 'dashboard' },
+      { id: 'log-order', label: 'Order Processing', path: '/admin/logistics/orders', roles: ['admin'], icon: 'clipboard-list' },
       { id: 'log-ship', label: 'Shipment Tracking', path: '/admin/logistics/shipments', roles: ['admin'], icon: 'truck' },
       { id: 'log-del', label: 'Delivery Routes', path: '/admin/logistics/delivery', roles: ['admin'], icon: 'map' },
+      { id: 'log-carrier', label: 'Carrier Partners', path: '/admin/logistics/carriers', roles: ['admin'], icon: 'building' },
+      { id: 'log-feedback', label: 'Customer Feedback', path: '/admin/logistics/feedback', roles: ['admin'], icon: 'chat-alt-2' },
+    ]
+  },
+  {
+    id: 'production',
+    label: 'Production',
+    icon: 'factory',
+    roles: ['admin'],
+    children: [
+      { id: 'prod-dash', label: 'Production Dashboard', path: '/admin/production/dashboard', roles: ['admin'], icon: 'dashboard' },
+      { id: 'prod-bom', label: 'Bill of Materials', path: '/admin/production/bom', roles: ['admin'], icon: 'clipboard-list' },
+      { id: 'prod-plan', label: 'Production Planning', path: '/admin/production/planning', roles: ['admin'], icon: 'calendar' },
+      { id: 'prod-wo', label: 'Work Orders', path: '/admin/production/work-orders', roles: ['admin'], icon: 'factory' },
+      { id: 'prod-jc', label: 'Job Cards', path: '/admin/production/job-cards', roles: ['admin'], icon: 'list' },
+      { id: 'prod-rmi', label: 'Raw Material Issue', path: '/admin/production/material-issue', roles: ['admin'], icon: 'truck' },
+      { id: 'prod-fge', label: 'Finished Goods Entry', path: '/admin/production/finished-goods', roles: ['admin'], icon: 'cube' },
+      { id: 'prod-qc', label: 'Quality Check', path: '/admin/production/quality-check', roles: ['admin'], icon: 'clipboard-check' },
+      { id: 'prod-mt', label: 'Machine Tracking', path: '/admin/production/machines', roles: ['admin'], icon: 'cpu' },
+      { id: 'prod-rep', label: 'Production Reports', path: '/admin/reports/production', roles: ['admin'], icon: 'document-report' },
     ]
   },
   {

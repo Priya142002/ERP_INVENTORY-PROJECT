@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { User } from '../../types';
-import logoIcon from '../../assets/logoicon.png';
 
 interface LoginPageProps {
   user: User | null;
@@ -393,9 +392,6 @@ export const LoginPage: React.FC<LoginPageProps> = ({ user, onLogin }) => {
           {/* Brand + Hero */}
           <div className="lp-lc">
             <div className="lp-brand">
-              <div className="lp-brand-icon">
-                <img src={logoIcon} alt="Logo" />
-              </div>
               <div>
                 <div className="lp-brand-name">ERP</div>
                 <div className="lp-brand-sub">Inventory System</div>
@@ -433,9 +429,6 @@ export const LoginPage: React.FC<LoginPageProps> = ({ user, onLogin }) => {
           <div className="lp-card">
 
             <div className="lp-card-hd">
-              <div className="lp-card-logo">
-                <img src={logoIcon} alt="Logo" />
-              </div>
               <h2>Welcome Back</h2>
               <p>Sign in to continue to ERP</p>
             </div>
