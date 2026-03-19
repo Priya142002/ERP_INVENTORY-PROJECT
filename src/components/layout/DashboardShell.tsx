@@ -16,6 +16,10 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({ user, onLogout, 
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024);
   const location = useLocation();
 
+  // Determine background based on user role
+  const isSuperAdmin = user.role === 'super_admin';
+  const bgClass = isSuperAdmin ? 'bg-slate-50' : 'bg-slate-50';
+
   // Close sidebar on route change (mobile)
   useEffect(() => {
     if (!isDesktop) {
@@ -116,7 +120,7 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({ user, onLogout, 
   };
 
   return (
-    <div className="h-screen flex bg-slate-50">
+    <div className={cn("h-screen flex", bgClass)}>
       {/* Sidebar */}
       <Sidebar 
         user={user} 
@@ -136,7 +140,7 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({ user, onLogout, 
         />
 
         {/* Main content */}
-         <main className="flex-1 relative overflow-y-auto focus:outline-none transition-colors duration-200 bg-slate-50 hide-scrollbar">
+         <main className={cn("flex-1 relative overflow-y-auto focus:outline-none transition-colors duration-200 hide-scrollbar", bgClass)}>
           <div className="py-8">
             <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10">
               <Outlet />

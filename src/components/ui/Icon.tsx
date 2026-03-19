@@ -52,7 +52,12 @@ import {
   LogOut,
   ChevronLeft,
   BellOff,
-  RefreshCw
+  RefreshCw,
+  Tag,
+  Puzzle,
+  Code,
+  Mail,
+  Factory
 } from 'lucide-react';
 
 interface IconProps {
@@ -128,7 +133,12 @@ const icons: Record<string, React.ComponentType<any>> = {
   'log-out': LogOut,
   'bell-off': BellOff,
   'building-2': Building2,
-  'refresh-cw': RefreshCw
+  'refresh-cw': RefreshCw,
+  tag: Tag,
+  puzzle: Puzzle,
+  code: Code,
+  mail: Mail,
+  factory: Factory
 };
 
 export const Icon: React.FC<IconProps> = ({ name, className = '', size = 'md' }) => {
@@ -144,4 +154,4 @@ export const Icon: React.FC<IconProps> = ({ name, className = '', size = 'md' })
   );
 };
 
-export default Icon;
+export default Icon;

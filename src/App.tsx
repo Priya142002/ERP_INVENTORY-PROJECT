@@ -4,6 +4,9 @@ import { AppRoutes } from './routes';
 import { User } from './types';
 import { getStoredUser, setStoredUser, clearStoredUser } from './utils/auth';
 import { SuperAdminThemeProvider } from './app/superadmin-theme';
+import { AdminThemeProvider } from './app/admin-theme';
+import { ModuleProvider } from './context/ModuleContext';
+import { AppProvider } from './context/AppContext';
 
 // Mock users data
 const mockUsers: Record<'super_admin' | 'admin', User> = {
@@ -44,18 +47,24 @@ function App() {
   };
 
   return (
-    <SuperAdminThemeProvider>
-      <Router>
-        <div className="min-h-screen">
-          <AppRoutes 
-            user={user} 
-            onLogin={login} 
-            onLogout={logout} 
-            onSwitchRole={switchRole} 
-          />
-        </div>
-      </Router>
-    </SuperAdminThemeProvider>
+    <AppProvider>
+      <SuperAdminThemeProvider>
+        <AdminThemeProvider>
+          <ModuleProvider>
+            <Router>
+              <div className="min-h-screen">
+                <AppRoutes 
+                  user={user} 
+                  onLogin={login} 
+                  onLogout={logout} 
+                  onSwitchRole={switchRole} 
+                />
+              </div>
+            </Router>
+          </ModuleProvider>
+        </AdminThemeProvider>
+      </SuperAdminThemeProvider>
+    </AppProvider>
   );
 }
 

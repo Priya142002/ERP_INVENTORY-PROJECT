@@ -5,3 +5,5 @@ export { default as SubscriptionManagementPage } from './SubscriptionManagementP
 export { default as AnalyticsPage } from './AnalyticsPage';
 export { default as AuditLogsPage } from './AuditLogsPage';
 export { default as SettingsPage } from './SettingsPage';
+export { default as ModulesManagementPage } from './ModulesManagementPage';
+export { default as SystemPage } from './SystemPage';

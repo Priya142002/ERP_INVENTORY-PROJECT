@@ -7,6 +7,7 @@ import {
   ComparisonBarChart,
   DistributionDonutChart
 } from '../../components/analytics/DashboardCharts';
+import { useAdminTheme } from '../../app/admin-theme';
 
 // Mock Data for Charts
 const salesTrendData = [
@@ -39,6 +40,8 @@ const sparklineData = [
 ];
 
 export const AdminDashboardPage: React.FC = () => {
+  const { mode } = useAdminTheme();
+  
   const stats = [
     { label: 'Total Revenue', value: '$128,450', icon: 'cash', color: 'bg-emerald-500', trend: '12.5%', trendUp: true },
     { label: 'Avg Purchases', value: '$42,200', icon: 'shopping-cart', color: 'bg-blue-500', trend: '5.2%', trendUp: true },
@@ -54,19 +57,31 @@ export const AdminDashboardPage: React.FC = () => {
   ];
 
   return (
-    <div className="space-y-8 pb-12">
+    <div className="space-y-8 pb-12" style={{ 
+      backgroundColor: mode === 'dark' ? 'var(--admin-background)' : undefined 
+    }}>
       {/* Page Title Section */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900">Dashboard Intelligence</h1>
-          <p className="text-slate-500 mt-1">Real-time oversight of your enterprise operations and performance</p>
+          <h1 className="text-2xl font-bold tracking-tight" style={{ 
+            color: mode === 'dark' ? 'var(--admin-text-primary)' : undefined 
+          }}>Dashboard Intelligence</h1>
+          <p className="mt-1" style={{ 
+            color: mode === 'dark' ? 'var(--admin-text-secondary)' : undefined 
+          }}>Real-time oversight of your enterprise operations and performance</p>
         </div>
         <div className="flex flex-row items-center gap-3">
-          <button className="flex items-center px-5 h-11 bg-white border border-slate-200 text-slate-600 text-xs font-bold rounded-2xl hover:bg-slate-50 transition-all shadow-sm">
+          <button className="flex items-center px-5 h-11 border text-xs font-bold rounded-2xl transition-all shadow-sm" style={{
+            backgroundColor: mode === 'dark' ? 'var(--admin-card)' : undefined,
+            borderColor: mode === 'dark' ? 'var(--admin-border)' : undefined,
+            color: mode === 'dark' ? 'var(--admin-text-primary)' : undefined
+          }}>
             <Icon name="chart-bar" size="xs" className="mr-2" />
             Export Data
           </button>
-          <button className="flex items-center px-5 h-11 bg-[#002147] text-white text-xs font-bold rounded-2xl hover:bg-[#003366] transition-all shadow-lg shadow-blue-900/15 border-none">
+          <button className="flex items-center px-5 h-11 text-white text-xs font-bold rounded-2xl transition-all shadow-lg border-none" style={{
+            backgroundColor: mode === 'dark' ? 'var(--admin-primary)' : '#002147'
+          }}>
             <Icon name="plus" size="xs" className="mr-2" />
             Quick Transaction
           </button>
@@ -76,13 +91,20 @@ export const AdminDashboardPage: React.FC = () => {
       {/* Row 1: Operational Tiles (Enhanced existing feature) */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {operationalOverview.map((op, i) => (
-          <div key={i} className="group relative bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden cursor-pointer">
+          <div key={i} className="group relative p-6 rounded-[2rem] border shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden cursor-pointer" style={{
+            backgroundColor: mode === 'dark' ? 'var(--admin-card)' : 'white',
+            borderColor: mode === 'dark' ? 'var(--admin-border)' : undefined
+          }}>
             <div className={`absolute top-0 right-0 w-24 h-24 ${op.bg} opacity-10 rounded-full translate-x-8 -translate-y-8 group-hover:scale-150 transition-transform duration-500`} />
             <div className={`w-12 h-12 ${op.bg} rounded-2xl flex items-center justify-center ${op.color} mb-4 relative z-10 group-hover:scale-110 transition-transform shadow-sm`}>
               <Icon name={op.icon} size="md" />
             </div>
-            <h3 className="text-sm font-bold text-slate-900 mb-1 relative z-10 group-hover:text-[#002147] transition-colors">{op.title}</h3>
-            <p className="text-xs text-slate-500 relative z-10 leading-relaxed group-hover:text-slate-600 transition-colors">{op.desc}</p>
+            <h3 className="text-sm font-bold mb-1 relative z-10 transition-colors" style={{
+              color: mode === 'dark' ? 'var(--admin-text-primary)' : undefined
+            }}>{op.title}</h3>
+            <p className="text-xs relative z-10 leading-relaxed transition-colors" style={{
+              color: mode === 'dark' ? 'var(--admin-text-secondary)' : undefined
+            }}>{op.desc}</p>
           </div>
         ))}
       </div>
@@ -114,29 +136,48 @@ export const AdminDashboardPage: React.FC = () => {
 
       {/* Row 5: Recent Transactions Table */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 bg-white rounded-[2rem] border border-slate-100 shadow-sm overflow-hidden flex flex-col">
-          <div className="p-7 border-b border-slate-50 flex items-center justify-between">
+        <div className="lg:col-span-2 rounded-[2rem] border shadow-sm overflow-hidden flex flex-col" style={{
+          backgroundColor: mode === 'dark' ? 'var(--admin-card)' : 'white',
+          borderColor: mode === 'dark' ? 'var(--admin-border)' : undefined
+        }}>
+          <div className="p-7 border-b flex items-center justify-between" style={{
+            borderColor: mode === 'dark' ? 'var(--admin-border)' : undefined
+          }}>
             <div>
-              <h2 className="text-lg font-bold text-slate-900 tracking-tight">Recent Transactions</h2>
-              <p className="text-xs text-slate-500 mt-1">Real-time ledger of inbound and outbound activities</p>
+              <h2 className="text-lg font-bold tracking-tight" style={{
+                color: mode === 'dark' ? 'var(--admin-text-primary)' : undefined
+              }}>Recent Transactions</h2>
+              <p className="text-xs mt-1" style={{
+                color: mode === 'dark' ? 'var(--admin-text-secondary)' : undefined
+              }}>Real-time ledger of inbound and outbound activities</p>
             </div>
-            <button className="text-[#002147] text-[10px] font-bold uppercase tracking-widest hover:bg-slate-50 px-4 py-2 rounded-xl border border-slate-200 transition-all">
+            <button className="text-[10px] font-bold uppercase tracking-widest px-4 py-2 rounded-xl border transition-all" style={{
+              color: mode === 'dark' ? 'var(--admin-primary)' : '#002147',
+              borderColor: mode === 'dark' ? 'var(--admin-border)' : undefined,
+              backgroundColor: mode === 'dark' ? 'var(--admin-hover)' : undefined
+            }}>
               Full Statement
             </button>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-left">
               <thead>
-                <tr className="bg-[#002147] text-white text-[10px] uppercase font-bold tracking-[0.1em]">
+                <tr className="text-white text-[10px] uppercase font-bold tracking-[0.1em]" style={{
+                  backgroundColor: mode === 'dark' ? 'var(--admin-primary)' : '#002147'
+                }}>
                   <th className="px-8 py-5">Entity / Reference</th>
                   <th className="px-6 py-5">Type</th>
                   <th className="px-6 py-5">Amount</th>
                   <th className="px-6 py-5 text-right pr-8">Verification</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-50">
+              <tbody className="divide-y" style={{
+                borderColor: mode === 'dark' ? 'var(--admin-border)' : undefined
+              }}>
                 {[1, 2, 3, 4, 5].map((i) => (
-                  <tr key={i} className="hover:bg-indigo-50/30 transition-all group cursor-pointer border-l-4 border-l-transparent hover:border-l-indigo-600">
+                  <tr key={i} className="transition-all group cursor-pointer border-l-4 border-l-transparent hover:border-l-indigo-600" style={{
+                    backgroundColor: mode === 'dark' ? 'var(--admin-card)' : undefined
+                  }}>
                     <td className="px-8 py-5">
                       <div className="flex items-center gap-3">
                         <div className={`w-9 h-9 rounded-xl flex items-center justify-center text-xs font-bold transition-transform group-hover:scale-110 ${
@@ -145,13 +186,19 @@ export const AdminDashboardPage: React.FC = () => {
                           {i % 2 === 0 ? 'PU' : 'SA'}
                         </div>
                         <div className="overflow-hidden">
-                          <p className="text-sm font-bold text-slate-900 truncate group-hover:text-indigo-600 transition-colors">#TRX-982{i}4</p>
-                          <p className="text-[10px] text-slate-400 font-medium group-hover:text-slate-500">Global Supply Corp • 12 Oct</p>
+                          <p className="text-sm font-bold truncate group-hover:text-indigo-600 transition-colors" style={{
+                            color: mode === 'dark' ? 'var(--admin-text-primary)' : undefined
+                          }}>#TRX-982{i}4</p>
+                          <p className="text-[10px] font-medium" style={{
+                            color: mode === 'dark' ? 'var(--admin-text-secondary)' : undefined
+                          }}>Global Supply Corp • 12 Oct</p>
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-5">
-                      <span className="text-xs font-semibold text-slate-600 group-hover:text-slate-800 transition-colors">{i % 2 === 0 ? 'Purchase' : 'Sales'}</span>
+                      <span className="text-xs font-semibold transition-colors" style={{
+                        color: mode === 'dark' ? 'var(--admin-text-secondary)' : undefined
+                      }}>{i % 2 === 0 ? 'Purchase' : 'Sales'}</span>
                     </td>
                     <td className="px-6 py-5">
                       <span className={`text-sm font-bold transition-colors ${i % 2 === 0 ? 'text-rose-600 group-hover:text-rose-700' : 'text-emerald-600 group-hover:text-emerald-700'}`}>
@@ -171,31 +218,45 @@ export const AdminDashboardPage: React.FC = () => {
         </div>
 
         {/* Side Notification Panel */}
-        <div className="bg-white rounded-[2rem] border border-slate-100 shadow-sm p-8 h-fit">
+        <div className="rounded-[2rem] border shadow-sm p-8 h-fit" style={{
+          backgroundColor: mode === 'dark' ? 'var(--admin-card)' : 'white',
+          borderColor: mode === 'dark' ? 'var(--admin-border)' : undefined
+        }}>
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-lg font-bold text-slate-900 tracking-tight">Safety Alerts</h2>
+            <h2 className="text-lg font-bold tracking-tight" style={{
+              color: mode === 'dark' ? 'var(--admin-text-primary)' : undefined
+            }}>Safety Alerts</h2>
             <Badge variant="error" className="px-2 py-0.5 text-[10px]">4 ACTIVE</Badge>
           </div>
           <div className="space-y-6">
             {[1, 2, 3].map(i => (
-              <div key={i} className="flex gap-4 items-start pb-6 border-b border-slate-50 last:border-0 last:pb-0">
+              <div key={i} className="flex gap-4 items-start pb-6 border-b last:border-0 last:pb-0" style={{
+                borderColor: mode === 'dark' ? 'var(--admin-border)' : undefined
+              }}>
                 <div className={`w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 ${
                   i === 1 ? 'bg-rose-50 text-rose-600' : 'bg-amber-50 text-amber-600'
                 }`}>
                   <Icon name={i === 1 ? 'archive' : 'clock'} size="sm" />
                 </div>
                 <div>
-                  <p className="text-sm font-bold text-slate-900 leading-snug">
+                  <p className="text-sm font-bold leading-snug" style={{
+                    color: mode === 'dark' ? 'var(--admin-text-primary)' : undefined
+                  }}>
                     {i === 1 ? 'Critical Stock Level: Dell Workstations' : 'Payment Overdue: Global Partners'}
                   </p>
-                  <p className="text-[11px] text-slate-500 mt-1 font-medium italic">
+                  <p className="text-[11px] mt-1 font-medium italic" style={{
+                    color: mode === 'dark' ? 'var(--admin-text-secondary)' : undefined
+                  }}>
                     {i === 1 ? 'Current reached 2 units (Threshold: 5)' : 'Invoice #INV-29304 remains unpaid for 30 days'}
                   </p>
                 </div>
               </div>
             ))}
           </div>
-          <button className="w-full mt-10 py-4 bg-slate-50 text-slate-600 text-[10px] font-bold uppercase tracking-widest rounded-2xl hover:bg-slate-100 transition-all">
+          <button className="w-full mt-10 py-4 text-[10px] font-bold uppercase tracking-widest rounded-2xl transition-all" style={{
+            backgroundColor: mode === 'dark' ? 'var(--admin-hover)' : undefined,
+            color: mode === 'dark' ? 'var(--admin-text-primary)' : undefined
+          }}>
             Review All Notifications
           </button>
         </div>

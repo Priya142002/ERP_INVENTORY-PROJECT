@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { User } from '../../types';
 import Icon from '../ui/Icon';
 import { useSuperAdminTheme } from '../../app/superadmin-theme';
+import { useAdminTheme } from '../../app/admin-theme';
 import { cn } from '../../utils/cn';
 
 interface HeaderProps {
@@ -12,7 +13,11 @@ interface HeaderProps {
   title?: string;
 }
 export const Header: React.FC<HeaderProps> = ({ user, onMenuClick, onLogout, onSwitchRole, title: _title = 'Dashboard' }) => {
-  const { mode, toggleTheme } = useSuperAdminTheme();
+  const superAdminTheme = user.role === 'super_admin' ? useSuperAdminTheme() : null;
+  const adminTheme = user.role === 'admin' ? useAdminTheme() : null;
+  
+  const mode = superAdminTheme?.mode || adminTheme?.mode || 'light';
+  const toggleTheme = superAdminTheme?.toggleTheme || adminTheme?.toggleTheme || (() => {});
   const isDarkMode = mode === 'dark';
   
   const [showNotifications, setShowNotifications] = useState(false);

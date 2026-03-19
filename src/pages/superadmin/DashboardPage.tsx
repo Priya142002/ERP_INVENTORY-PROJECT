@@ -34,10 +34,10 @@ const GROWTH_DATA = [
 
 const RECENT_COMPANIES = [
   { name: "BuildSafe Corp", plan: "Enterprise", users: 248, status: "Active" },
-  { name: "SteelWorks Ltd", plan: "Basic", users: 34, status: "Active" },
-  { name: "GreenField Mining", plan: "Trial", users: 5, status: "Trial" },
+  { name: "SteelWorks Ltd", plan: "Pro", users: 78, status: "Active" },
+  { name: "GreenField Mining", plan: "Basic", users: 18, status: "Active" },
   { name: "AeroCraft Inc", plan: "Enterprise", users: 519, status: "Active" },
-  { name: "Harbor Logistics", plan: "Basic", users: 87, status: "Suspended" },
+  { name: "Harbor Logistics", plan: "Pro", users: 87, status: "Suspended" },
 ];
 
 export function DashboardPage() {
@@ -217,11 +217,11 @@ export function DashboardPage() {
                 <div className="px-2 py-1 rounded-full text-xs font-medium"
                    style={{ 
                     backgroundColor: company.status === "Active" ? "rgba(40, 167, 69, 0.1)" : 
-                                   company.status === "Trial" ? "rgba(255, 159, 67, 0.1)" : 
-                                   "rgba(220, 53, 69, 0.1)",
+                                   company.status === "Suspended" ? "rgba(220, 53, 69, 0.1)" : 
+                                   "rgba(255, 159, 67, 0.1)",
                     color: company.status === "Active" ? "var(--sa-success)" : 
-                           company.status === "Trial" ? "var(--sa-warning)" : 
-                           "var(--sa-error)"
+                           company.status === "Suspended" ? "var(--sa-error)" : 
+                           "var(--sa-warning)"
                   }}>
                   {company.status}
                 </div>

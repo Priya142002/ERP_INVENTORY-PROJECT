@@ -10,12 +10,12 @@ function ChangePlanModal({ subscription, onClose, onSave }: { subscription: any;
   const [prorated, setProrated] = useState(true);
   
   const planDetails = {
-    Trial: { price: 0, seats: 5, color: "var(--sa-warning)" },
     Basic: { price: 49, seats: 50, color: "var(--sa-info)" },
-    Enterprise: { price: 199, seats: "∞", color: "var(--sa-primary)" }
+    Pro: { price: 149, seats: 200, color: "var(--sa-success)" },
+    Enterprise: { price: 499, seats: "∞", color: "var(--sa-primary)" }
   };
 
-  const currentPrice = subscription.plan === "Enterprise" ? 199 : subscription.plan === "Basic" ? 49 : 0;
+  const currentPrice = subscription.plan === "Enterprise" ? 499 : subscription.plan === "Pro" ? 149 : 49;
   const newPrice = planDetails[newPlan as keyof typeof planDetails].price;
   const priceDiff = newPrice - currentPrice;
 
@@ -102,10 +102,10 @@ function ChangePlanModal({ subscription, onClose, onSave }: { subscription: any;
             </label>
           </div>
 
-          {subscription.plan === "Trial" && newPlan !== "Trial" && (
+          {subscription.plan === "Basic" && newPlan !== "Basic" && (
             <div className="p-3 rounded-lg" style={{ backgroundColor: 'rgba(40, 167, 69, 0.1)' }}>
               <p className="text-xs" style={{ color: 'var(--sa-success)' }}>
-                Converting from trial: First invoice will include setup fee
+                Upgrading from Basic: Changes will take effect immediately
               </p>
             </div>
           )}
@@ -144,11 +144,11 @@ const pageMotion = {
 };
 
 const SUBSCRIPTIONS = [
-  { company: "BuildSafe Corp", plan: "Enterprise", price: "$199/mo", nextBilling: "Apr 1 2026", status: "Active", seats: 248, maxSeats: null },
-  { company: "SteelWorks Ltd", plan: "Basic", price: "$49/mo", nextBilling: "Mar 30 2026", status: "Active", seats: 34, maxSeats: 50 },
-  { company: "GreenField Mining", plan: "Trial", price: "Free", nextBilling: "Apr 9 2026", status: "Trial", seats: 5, maxSeats: 5 },
-  { company: "AeroCraft Inc", plan: "Enterprise", price: "$199/mo", nextBilling: "Apr 15 2026", status: "Active", seats: 519, maxSeats: null },
-  { company: "Harbor Logistics", plan: "Basic", price: "$49/mo", nextBilling: "—", status: "Suspended", seats: 87, maxSeats: 50 },
+  { company: "BuildSafe Corp", plan: "Enterprise", price: "$499/mo", nextBilling: "Apr 1 2026", status: "Active", seats: 248, maxSeats: null },
+  { company: "SteelWorks Ltd", plan: "Pro", price: "$149/mo", nextBilling: "Mar 30 2026", status: "Active", seats: 78, maxSeats: 200 },
+  { company: "GreenField Mining", plan: "Basic", price: "$49/mo", nextBilling: "Apr 9 2026", status: "Active", seats: 18, maxSeats: 50 },
+  { company: "AeroCraft Inc", plan: "Enterprise", price: "$499/mo", nextBilling: "Apr 15 2026", status: "Active", seats: 519, maxSeats: null },
+  { company: "Harbor Logistics", plan: "Pro", price: "$149/mo", nextBilling: "—", status: "Suspended", seats: 87, maxSeats: 200 },
 ];
 
 export function SubscriptionManagementPage() {
@@ -157,14 +157,15 @@ export function SubscriptionManagementPage() {
   const [showPlanModal, setShowPlanModal] = useState(false);
 
   const totalMRR = SUBSCRIPTIONS.reduce((acc, sub) => {
-    if (sub.plan === "Enterprise") return acc + 199;
+    if (sub.plan === "Enterprise") return acc + 499;
+    if (sub.plan === "Pro") return acc + 149;
     if (sub.plan === "Basic") return acc + 49;
     return acc;
   }, 0);
 
   const activeCount = SUBSCRIPTIONS.filter(s => s.status === "Active").length;
-  const enterpriseCount = SUBSCRIPTIONS.filter(s => s.plan === "Enterprise").length;
-  const trialCount = SUBSCRIPTIONS.filter(s => s.plan === "Trial").length;
+  const paidCount = SUBSCRIPTIONS.filter(s => s.plan === "Enterprise" || s.plan === "Pro").length;
+  const proCount = SUBSCRIPTIONS.filter(s => s.plan === "Pro").length;
 
   return (
     <motion.div {...pageMotion} className="p-6 space-y-6 max-w-7xl mx-auto">
@@ -233,19 +234,19 @@ export function SubscriptionManagementPage() {
             <div className="h-8 w-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: "rgba(44, 110, 213, 0.1)" }}>
               <TrendingUp className="h-4 w-4" style={{ color: "var(--sa-primary)" }} />
             </div>
-            <span className="text-xs font-medium" style={{ color: "var(--sa-text-secondary)" }}>Enterprise Plans</span>
+            <span className="text-xs font-medium" style={{ color: "var(--sa-text-secondary)" }}>Pro & Enterprise</span>
           </div>
-          <div className="text-2xl font-bold" style={{ color: "var(--sa-primary)" }}>{enterpriseCount}</div>
+          <div className="text-2xl font-bold" style={{ color: "var(--sa-primary)" }}>{paidCount}</div>
         </div>
 
         <div className="p-5 rounded-xl border" style={{ backgroundColor: "var(--sa-card)", borderColor: "var(--sa-border)" }}>
           <div className="flex items-center gap-3 mb-3">
-            <div className="h-8 w-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: "rgba(255, 159, 67, 0.1)" }}>
-              <Clock className="h-4 w-4" style={{ color: "var(--sa-warning)" }} />
+            <div className="h-8 w-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: "rgba(40, 167, 69, 0.1)" }}>
+              <Clock className="h-4 w-4" style={{ color: "var(--sa-success)" }} />
             </div>
-            <span className="text-xs font-medium" style={{ color: "var(--sa-text-secondary)" }}>Active Trials</span>
+            <span className="text-xs font-medium" style={{ color: "var(--sa-text-secondary)" }}>Pro Plans</span>
           </div>
-          <div className="text-2xl font-bold" style={{ color: "var(--sa-warning)" }}>{trialCount}</div>
+          <div className="text-2xl font-bold" style={{ color: "var(--sa-success)" }}>{proCount}</div>
         </div>
       </div>
 
@@ -296,11 +297,11 @@ export function SubscriptionManagementPage() {
                     <span className="px-2 py-1 rounded-full text-xs font-medium"
                       style={{ 
                         backgroundColor: sub.plan === "Enterprise" ? "rgba(44, 110, 213, 0.1)" :
-                                       sub.plan === "Basic" ? "rgba(44, 110, 213, 0.1)" :
-                                       "rgba(255, 159, 67, 0.1)",
+                                       sub.plan === "Pro" ? "rgba(40, 167, 69, 0.1)" :
+                                       "rgba(44, 110, 213, 0.1)",
                         color: sub.plan === "Enterprise" ? "var(--sa-primary)" :
-                               sub.plan === "Basic" ? "var(--sa-info)" :
-                               "var(--sa-warning)"
+                               sub.plan === "Pro" ? "var(--sa-success)" :
+                               "var(--sa-info)"
                       }}>
                       {sub.plan}
                     </span>
@@ -321,8 +322,8 @@ export function SubscriptionManagementPage() {
                   <td className="p-4">
                     <span style={{ 
                       color: sub.status === "Active" ? "var(--sa-success)" :
-                             sub.status === "Trial" ? "var(--sa-warning)" :
-                             "var(--sa-error)"
+                             sub.status === "Suspended" ? "var(--sa-error)" :
+                             "var(--sa-warning)"
                     }}>
                       {sub.status}
                     </span>

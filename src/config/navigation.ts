@@ -1,10 +1,11 @@
 import { NavigationItem } from '../types';
+import { filterNavigationByPlan, SubscriptionPlan } from '../utils/subscriptionAccess';
 
-// Navigation configuration for the admin dashboard
+// Super Admin Navigation - Streamlined for Multi-Tenant ERP Platform
 export const superAdminNavigation: NavigationItem[] = [
   {
     id: 'dashboard',
-    label: 'Platform Overview',
+    label: 'Dashboard',
     icon: 'dashboard',
     path: '/superadmin/dashboard',
     roles: ['super_admin']
@@ -17,17 +18,17 @@ export const superAdminNavigation: NavigationItem[] = [
     roles: ['super_admin']
   },
   {
-    id: 'users',
-    label: 'All Users',
-    icon: 'users',
-    path: '/superadmin/users',
+    id: 'subscriptions',
+    label: 'Subscriptions & Plans',
+    icon: 'credit-card',
+    path: '/superadmin/subscriptions',
     roles: ['super_admin']
   },
   {
-    id: 'subscriptions',
-    label: 'Subscriptions',
-    icon: 'credit-card',
-    path: '/superadmin/subscriptions',
+    id: 'modules',
+    label: 'ERP Modules',
+    icon: 'puzzle',
+    path: '/superadmin/modules',
     roles: ['super_admin']
   },
   {
@@ -38,17 +39,10 @@ export const superAdminNavigation: NavigationItem[] = [
     roles: ['super_admin']
   },
   {
-    id: 'audit-logs',
-    label: 'Audit Logs',
-    icon: 'document-text',
-    path: '/superadmin/audit-logs',
-    roles: ['super_admin']
-  },
-  {
-    id: 'settings',
-    label: 'System Settings',
+    id: 'system',
+    label: 'System',
     icon: 'cog',
-    path: '/superadmin/settings',
+    path: '/superadmin/system',
     roles: ['super_admin']
   }
 ];
@@ -222,6 +216,20 @@ export const adminNavigation: NavigationItem[] = [
     ]
   },
   {
+    id: 'subscription',
+    label: 'My Subscription',
+    icon: 'credit-card',
+    path: '/admin/subscription',
+    roles: ['admin']
+  },
+  {
+    id: 'modules',
+    label: 'My Modules',
+    icon: 'puzzle',
+    path: '/admin/modules',
+    roles: ['admin']
+  },
+  {
     id: 'admin',
     label: 'Admin Settings',
     icon: 'cog',
@@ -236,9 +244,16 @@ export const adminNavigation: NavigationItem[] = [
 ];
 
 // Helper function to filter navigation items based on user role
-export function getNavigationForRole(role: 'super_admin' | 'admin'): NavigationItem[] {
+export function getNavigationForRole(role: 'super_admin' | 'admin', subscriptionPlan?: SubscriptionPlan): NavigationItem[] {
   if (role === 'super_admin') {
     return superAdminNavigation;
   }
+  
+  // For admin role, filter based on subscription plan
+  if (subscriptionPlan) {
+    return filterNavigationByPlan(adminNavigation, subscriptionPlan);
+  }
+  
+  // Default to all modules if no plan specified (for backward compatibility)
   return adminNavigation;
 }

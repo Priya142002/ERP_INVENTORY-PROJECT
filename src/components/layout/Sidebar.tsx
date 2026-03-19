@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { NavigationItem, User } from '../../types';
 import { getNavigationForRole } from '../../config/navigation';
+import { useModulesSafe } from '../../context/ModuleContext';
 import Icon from '../ui/Icon';
 import { cn } from '../../utils/cn';
 
@@ -101,7 +102,24 @@ const NavigationItemComponent: React.FC<NavigationItemComponentProps> = ({
 export const Sidebar: React.FC<SidebarProps> = ({ user, isOpen, onClose }) => {
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
   const location = useLocation();
-  const navigationItems = getNavigationForRole(user.role);
+  const { isModuleEnabled } = useModulesSafe();
+  
+  // Get subscription plan from user context (default to 'pro' for demo)
+  // In production, this would come from the user's actual subscription
+  const subscriptionPlan = (user as any).subscriptionPlan || 'pro';
+  const navigationItems = getNavigationForRole(user.role, subscriptionPlan);
+
+  // Filter navigation items based on enabled modules (only for admin role)
+  const filteredNavigationItems = user.role === 'admin' 
+    ? navigationItems.filter(item => {
+        // Always show non-module items (subscription, modules, admin settings)
+        if (['subscription', 'modules', 'admin'].includes(item.id)) {
+          return true;
+        }
+        // Filter module items based on enabled state
+        return isModuleEnabled(item.id);
+      })
+    : navigationItems;
 
   const toggleExpanded = (itemId: string) => {
     const newExpanded = new Set(expandedItems);
@@ -159,7 +177,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ user, isOpen, onClose }) => {
 
         {/* Navigation */}
         <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto overflow-x-hidden hide-scrollbar">
-          {navigationItems.map((item) => (
+          {filteredNavigationItems.map((item) => (
             <NavigationItemComponent
               key={item.id}
               item={item}

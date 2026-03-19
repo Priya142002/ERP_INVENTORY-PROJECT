@@ -10,9 +10,13 @@ import {
   AnalyticsPage,
   AuditLogsPage,
   SettingsPage,
+  ModulesManagementPage,
+  SystemPage,
 } from '../pages/superadmin';
 import {
   AdminDashboardPage,
+  SubscriptionPage,
+  ModulesPage,
   InventoryDashboard,
   ProductsPage,
   AddProductPage,
@@ -167,8 +171,10 @@ export const AppRoutes = ({ user, onLogin, onLogout, onSwitchRole }: AppRoutesPr
             <Route path="subscriptions/:id" element={<SubscriptionManagementPage />} />
             <Route path="subscriptions/:id/edit" element={<SubscriptionManagementPage />} />
             <Route path="subscriptions/assign" element={<SubscriptionManagementPage />} />
+            <Route path="modules" element={<ModulesManagementPage />} />
             <Route path="analytics" element={<AnalyticsPage />} />
-            <Route path="audit" element={<AuditLogsPage />} />
+            <Route path="audit-logs" element={<AuditLogsPage />} />
+            <Route path="system" element={<SystemPage />} />
           </>
         )}
 
@@ -201,6 +207,8 @@ export const AppRoutes = ({ user, onLogin, onLogout, onSwitchRole }: AppRoutesPr
       >
         <Route index element={<Navigate to="/admin/dashboard" replace />} />
         <Route path="dashboard" element={<AdminDashboardPage />} />
+        <Route path="subscription" element={<SubscriptionPage />} />
+        <Route path="modules" element={<ModulesPage />} />
         
         {/* Inventory */}
         <Route path="inventory">

@@ -1,4 +1,6 @@
 export { default as AdminDashboardPage } from './DashboardPage';
+export { default as SubscriptionPage } from './SubscriptionPage';
+export { default as ModulesPage } from './ModulesPage';
 export * from './PageTemplate';
 
 // Inventory

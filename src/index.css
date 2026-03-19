@@ -58,6 +58,11 @@
     background-color: var(--sa-background);
     color: var(--sa-text-primary);
   }
+  
+  .admin-mode body {
+    background-color: var(--admin-background);
+    color: var(--admin-text-primary);
+  }
 }
 
 /* Custom component styles */
@@ -222,4 +227,4 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
-}
+}
