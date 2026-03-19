@@ -107,7 +107,7 @@ export function SystemPage() {
   });
 
   const handleCopyApiKey = () => {
-    navigator.clipboard.writeText("sk_live_51234567890abcdefghijklmnop");
+    navigator.clipboard.writeText("sk_live_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -752,7 +752,7 @@ export function SystemPage() {
                 <div className="flex items-center gap-2">
                   <input
                     type={showApiKey ? "text" : "password"}
-                    value="sk_live_51234567890abcdefghijklmnop"
+                    value="sk_live_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
                     readOnly
                     className="flex-1 h-10 px-4 rounded-lg border text-sm font-mono"
                     style={{ backgroundColor: "var(--sa-card)", borderColor: "var(--sa-border)", color: "var(--sa-text-primary)" }}
