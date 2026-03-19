@@ -1,87 +1,109 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Download, Search, Filter, BarChart, FileText, PieChart, Activity } from 'lucide-react';
-import Button from '../../../components/ui/Button';
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Download, Upload, Eye, FileText, BarChart, Activity, PieChart } from "lucide-react";
 
-export const ProductionReportsPage: React.FC = () => {
-  const reports = [
-    { id: '1', title: 'Daily Output Summary', desc: 'Summary of total units produced by each shift today.', icon: BarChart, color: 'text-blue-600', bg: 'bg-blue-50' },
-    { id: '2', title: 'Material Consumption', desc: 'Detailed report on raw material usage vs planning benchmarks.', icon: Activity, color: 'text-emerald-600', bg: 'bg-emerald-50' },
-    { id: '3', title: 'Production Cost Analysis', desc: 'Breakdown of manufacturing costs including labor and overhead.', icon: PieChart, color: 'text-indigo-600', bg: 'bg-indigo-50' },
-    { id: '4', title: 'Yield & Waste Report', desc: 'Analysis of production yield and scrap material generated.', icon: FileText, color: 'text-rose-600', bg: 'bg-rose-50' },
-  ];
+interface FilterField { key:string; label:string; type:"text"|"date"|"select"; options?:string[]; }
+interface Report { id:string; name:string; icon:React.ReactNode; filters:FilterField[]; }
+
+const WORK_CENTERS = ["Assembly Line A","Assembly Line B","Packaging","Quality Control","Finishing"];
+const PRODUCTS     = ["Premium Wireless Headphones","Smart Fitness Tracker","4K Ultra HD Monitor","Ergonomic Office Chair"];
+const SHIFTS       = ["Morning","Afternoon","Night"];
+
+const REPORTS: Report[] = [
+  { id:"daily-output",      name:"Daily Output Summary",    icon:<BarChart size={16}/>,   filters:[{key:"work_center",label:"Work Center",type:"select",options:WORK_CENTERS},{key:"shift",label:"Shift",type:"select",options:SHIFTS},{key:"date_from",label:"Date From",type:"date"},{key:"date_to",label:"Date To",type:"date"}] },
+  { id:"material-consumption",name:"Material Consumption",  icon:<Activity size={16}/>,   filters:[{key:"product",label:"Product",type:"select",options:PRODUCTS},{key:"work_center",label:"Work Center",type:"select",options:WORK_CENTERS},{key:"date_from",label:"Date From",type:"date"},{key:"date_to",label:"Date To",type:"date"}] },
+  { id:"production-cost",   name:"Production Cost Analysis",icon:<PieChart size={16}/>,   filters:[{key:"product",label:"Product",type:"select",options:PRODUCTS},{key:"date_from",label:"Date From",type:"date"},{key:"date_to",label:"Date To",type:"date"}] },
+  { id:"yield-waste",       name:"Yield & Waste Report",    icon:<FileText size={16}/>,   filters:[{key:"product",label:"Product",type:"select",options:PRODUCTS},{key:"work_center",label:"Work Center",type:"select",options:WORK_CENTERS},{key:"date_from",label:"Date From",type:"date"},{key:"date_to",label:"Date To",type:"date"}] },
+  { id:"production-order",  name:"Production Order Report", icon:<FileText size={16}/>,   filters:[{key:"product",label:"Product",type:"select",options:PRODUCTS},{key:"status",label:"Status",type:"select",options:["All","Planned","In Progress","Completed","Cancelled"]},{key:"date_from",label:"Date From",type:"date"},{key:"date_to",label:"Date To",type:"date"}] },
+  { id:"work-center-perf",  name:"Work Center Performance", icon:<BarChart size={16}/>,   filters:[{key:"work_center",label:"Work Center",type:"select",options:WORK_CENTERS},{key:"date_from",label:"Date From",type:"date"},{key:"date_to",label:"Date To",type:"date"}] },
+];
+
+const fieldCls = "w-full h-9 px-3 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:border-indigo-400 transition bg-white";
+
+const ReportPanel: React.FC<{report:Report}> = ({report}) => {
+  const init = () => Object.fromEntries(report.filters.flatMap(f=>[[f.key,""], [`${f.key}_to`,""]]));
+  const [values, setValues] = useState<Record<string,string>>(init);
+  const set = (k:string,v:string) => setValues(p=>({...p,[k]:v}));
+  const hasFilters = Object.values(values).some(v=>v!=="");
+  const renderField = (f:FilterField, key:string) => f.type==="select"
+    ? <select className={fieldCls} value={values[key]} onChange={e=>set(key,e.target.value)}><option value="">— Select —</option>{f.options?.map(o=><option key={o} value={o}>{o}</option>)}</select>
+    : f.type==="date"
+    ? <input type="date" className={fieldCls} value={values[key]} onChange={e=>set(key,e.target.value)}/>
+    : <input type="text" className={fieldCls} placeholder={`Enter ${f.label.toLowerCase()}…`} value={values[key]} onChange={e=>set(key,e.target.value)}/>;
 
   return (
-    <motion.div 
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="space-y-6"
-    >
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900">Production Reports</h1>
-          <p className="text-slate-500 text-sm mt-1 font-medium">Analyze manufacturing performance and resource efficiency</p>
+    <motion.div key={report.id} initial={{opacity:0,x:12}} animate={{opacity:1,x:0}} className="flex-1 flex flex-col">
+      <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-slate-50/60">
+        <div className="flex items-center gap-2">
+          <div className="p-1.5 bg-indigo-50 rounded-lg text-indigo-600">{report.icon}</div>
+          <h2 className="font-bold text-slate-800 text-sm">{report.name}</h2>
         </div>
-        <div className="flex items-center gap-3">
-          <Button variant="secondary" className="px-4 h-10 text-xs font-bold rounded-xl border-slate-200" leftIcon={<Download size={14} />}>
-            Export All
-          </Button>
+        <div className="flex items-center gap-2">
+          <button className="flex items-center gap-1.5 h-8 px-3 rounded-lg border border-slate-200 bg-white text-xs font-semibold text-slate-600 hover:bg-slate-50 transition"><Upload size={13}/> Upload</button>
+          <button className="flex items-center gap-1.5 h-8 px-3 rounded-lg border border-slate-200 bg-white text-xs font-semibold text-slate-600 hover:bg-slate-50 transition"><Download size={13}/> Download</button>
+          <button className="flex items-center gap-1.5 h-8 px-4 rounded-lg bg-[#002147] text-white text-xs font-bold hover:bg-[#003366] transition"><Eye size={13}/> Show</button>
         </div>
       </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-8">
-        {reports.map((report, i) => (
-          <motion.div
-            key={report.id}
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.1 }}
-            className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group cursor-pointer"
-          >
-            <div className="flex items-start justify-between mb-4">
-              <div className={`w-12 h-12 ${report.bg} ${report.color} rounded-2xl flex items-center justify-center shadow-sm border border-current/10 group-hover:scale-110 transition-transform`}>
-                <report.icon size={24} />
+      <div className="p-6 flex-1">
+        <div className="grid grid-cols-2 gap-x-6 mb-2">
+          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Filter Value (From)</p>
+          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Filter Value (To)</p>
+        </div>
+        <div className="border border-slate-200 rounded-xl overflow-hidden bg-white">
+          {report.filters.map((f,idx)=>(
+            <div key={f.key} className={`grid grid-cols-2 gap-0 ${idx!==report.filters.length-1?"border-b border-slate-100":""}`}>
+              <div className="flex items-center gap-3 px-5 py-3 border-r border-slate-100 bg-slate-50/40">
+                <span className="text-xs font-semibold text-slate-700 min-w-[120px]">{f.label}</span>
+                <div className="flex-1">{renderField(f, f.key)}</div>
               </div>
-              <button className="text-slate-400 hover:text-blue-600 transition-colors">
-                <Download size={18} />
-              </button>
+              <div className="flex items-center px-5 py-3">{renderField(f, `${f.key}_to`)}</div>
             </div>
-            <div>
-              <h3 className="text-sm font-bold text-slate-900 group-hover:text-blue-600 transition-colors uppercase tracking-tight">{report.title}</h3>
-              <p className="text-xs text-slate-500 mt-2 font-medium italic">{report.desc}</p>
-            </div>
-            <div className="mt-6 flex items-center justify-between pt-4 border-t border-slate-50">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">Last generated: 2 hours ago</span>
-              <button className="text-blue-600 font-bold text-[10px] uppercase tracking-widest hover:underline transition-all">Generate Now</button>
-            </div>
-          </motion.div>
-        ))}
-      </div>
-
-      <div className="bg-white rounded-[1.5rem] shadow-sm border border-slate-100 overflow-hidden">
-        <div className="p-4 border-b border-slate-50 flex items-center justify-between bg-white/50">
-          <div className="flex items-center gap-4">
-            <div className="relative font-bold uppercase tracking-widest text-[#002147] text-[11px] flex items-center gap-2">
-              <BarChart size={14} className="text-blue-600" />
-              <span>Historical Analytics Monitor</span>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-             <div className="relative">
-                <Search size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-                <input type="text" placeholder="Search archive..." className="pl-10 pr-4 py-2 text-[11px] bg-slate-50/50 border border-slate-200 rounded-xl outline-none w-48 transition-all font-medium" />
-             </div>
-             <div className="bg-white border border-slate-200 rounded-xl p-2 shadow-sm text-slate-400 hover:text-blue-600 transition-colors cursor-pointer">
-                <Filter size={14} />
-             </div>
-          </div>
+          ))}
         </div>
-        <div className="p-20 text-center flex flex-col items-center justify-center">
-            <div className="w-20 h-20 bg-slate-50 text-slate-200 rounded-full flex items-center justify-center mb-6 border-4 border-white shadow-inner"><PieChart size={40} /></div>
-            <p className="text-slate-400 text-sm font-medium italic max-w-sm mx-auto lowercase">NO HISTORICAL DATA STREAM DETECTED FOR ANALYTICAL PROCESSING IN THE CURRENT CYCLE.</p>
+        <div className="flex items-center justify-between mt-5">
+          {hasFilters ? <button onClick={()=>setValues(init())} className="text-xs text-slate-400 hover:text-rose-500 transition font-medium">Clear filters</button> : <span/>}
+          <button className="flex items-center gap-2 h-9 px-5 rounded-xl bg-[#002147] text-white text-xs font-bold hover:bg-[#003366] transition"><Eye size={14}/> Generate Report</button>
+        </div>
+        <div className="mt-8 flex flex-col items-center justify-center py-16 text-center border-2 border-dashed border-slate-200 rounded-xl bg-slate-50/40">
+          <div className="p-3 bg-slate-100 rounded-xl text-slate-400 mb-3">{report.icon}</div>
+          <p className="text-sm font-semibold text-slate-500">Set filters and click <span className="text-indigo-600">Generate Report</span></p>
+          <p className="text-xs text-slate-400 mt-1">Report data will appear here</p>
         </div>
       </div>
     </motion.div>
   );
 };
+
+export const ProductionReportsPage: React.FC = () => {
+  const [activeId, setActiveId] = useState(REPORTS[0].id);
+  const active = REPORTS.find(r=>r.id===activeId)!;
+  return (
+    <motion.div initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} className="space-y-4">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold tracking-tight text-slate-900">Production Reports</h1>
+        <button className="flex items-center gap-2 h-9 px-4 rounded-xl border border-slate-200 bg-white text-xs font-bold text-slate-600 hover:bg-slate-50 transition"><Download size={14}/> Export Summary</button>
+      </div>
+      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex min-h-[600px]">
+        <div className="w-64 flex-shrink-0 border-r border-slate-100 bg-slate-50/50 flex flex-col">
+          <div className="px-4 py-3 border-b border-slate-100">
+            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Report Type</p>
+          </div>
+          <nav className="flex-1 py-2 overflow-y-auto">
+            {REPORTS.map(r=>(
+              <button key={r.id} onClick={()=>setActiveId(r.id)}
+                className={`w-full flex items-center gap-3 px-4 py-2.5 text-left text-sm transition-all ${activeId===r.id?"bg-[#002147] text-white font-semibold":"text-slate-600 hover:bg-slate-100 font-medium"}`}>
+                <span className={activeId===r.id?"text-white":"text-slate-400"}>{r.icon}</span>
+                <span className="leading-tight">{r.name}</span>
+              </button>
+            ))}
+          </nav>
+        </div>
+        <AnimatePresence mode="wait">
+          <ReportPanel key={activeId} report={active}/>
+        </AnimatePresence>
+      </div>
+    </motion.div>
+  );
+};
+
+export default ProductionReportsPage;
