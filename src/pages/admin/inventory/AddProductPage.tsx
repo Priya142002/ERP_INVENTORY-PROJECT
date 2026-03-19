@@ -57,11 +57,12 @@ const QuickAddModal: React.FC<QuickAddModalProps> = ({ title, label, onClose, on
     if (val.trim()) { onSave(val.trim()); onClose(); }
   };
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40">
       <motion.div
         initial={{ opacity: 0, scale: 0.95, y: -10 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         className="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6"
+        style={{ backgroundColor: '#ffffff', opacity: 1 }}
       >
         <div className="flex items-center justify-between mb-5">
           <h3 className="font-bold text-slate-800 text-base">Add New {title}</h3>
@@ -84,14 +85,16 @@ const QuickAddModal: React.FC<QuickAddModalProps> = ({ title, label, onClose, on
         <div className="flex gap-3">
           <button
             onClick={onClose}
-            className="flex-1 h-10 rounded-lg border border-slate-200 text-sm font-medium text-slate-500 hover:bg-slate-50 transition"
+            className="flex-1 h-12 rounded-lg bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition flex items-center justify-center"
+            style={{ minHeight: '48px', height: '48px' }}
           >
             Cancel
           </button>
           <button
             onClick={handleSave}
             disabled={!val.trim()}
-            className="flex-1 h-10 rounded-lg bg-[#002147] text-white text-sm font-semibold hover:bg-[#003366] disabled:opacity-40 disabled:cursor-not-allowed transition"
+            className="flex-1 h-12 rounded-lg bg-[#002147] text-white text-sm font-semibold hover:bg-[#003366] disabled:opacity-40 disabled:cursor-not-allowed transition flex items-center justify-center"
+            style={{ minHeight: '48px', height: '48px' }}
           >
             Add {title}
           </button>

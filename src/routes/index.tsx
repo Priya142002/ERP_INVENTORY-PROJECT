@@ -9,7 +9,7 @@ import {
   SubscriptionManagementPage,
   AnalyticsPage,
   AuditLogsPage,
-  SettingsPage,
+  SettingsPage as SuperAdminSettingsPage,
   ModulesManagementPage,
   SystemPage,
 } from '../pages/superadmin';
@@ -17,6 +17,7 @@ import {
   AdminDashboardPage,
   SubscriptionPage,
   ModulesPage,
+  SettingsPage as AdminSettingsPage,
   InventoryDashboard,
   ProductsPage,
   AddProductPage,
@@ -178,7 +179,7 @@ export const AppRoutes = ({ user, onLogin, onLogout, onSwitchRole }: AppRoutesPr
           </>
         )}
 
-        <Route path="settings" element={<SettingsPage />} />
+        <Route path="settings" element={<SuperAdminSettingsPage />} />
 
         <Route path="*" element={<Navigate to="/superadmin/dashboard" replace />} />
       </Route>
@@ -289,14 +290,13 @@ export const AppRoutes = ({ user, onLogin, onLogout, onSwitchRole }: AppRoutesPr
         </Route>
 
         {/* Settings */}
-        <Route path="settings">
-          <Route path="company" element={<CompanySettingsPage />} />
-          <Route path="users" element={<UsersPage />} />
-          <Route path="roles" element={<RolesPermissionsPage />} />
-          <Route path="tax" element={<TaxSettingsPage />} />
-          <Route path="notifications" element={<NotificationSettingsPage />} />
-          <Route path="activity" element={<ActivityLogPage />} />
-        </Route>
+        <Route path="settings" element={<AdminSettingsPage />} />
+        <Route path="settings/company" element={<CompanySettingsPage />} />
+        <Route path="settings/users" element={<UsersPage />} />
+        <Route path="settings/roles" element={<RolesPermissionsPage />} />
+        <Route path="settings/tax" element={<TaxSettingsPage />} />
+        <Route path="settings/notifications" element={<NotificationSettingsPage />} />
+        <Route path="settings/activity" element={<ActivityLogPage />} />
 
         {/* CRM */}
         <Route path="crm">

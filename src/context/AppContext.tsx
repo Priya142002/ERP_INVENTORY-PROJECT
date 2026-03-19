@@ -295,8 +295,43 @@ const getInitialState = (): ApplicationState => ({
     email: '',
     role: 'super_admin'
   },
-  companies: [],
-  admins: [],
+  companies: [
+    {
+      id: 'demo-company-1',
+      code: 'COMP001',
+      name: 'Acme Corporation',
+      companyType: 'private_limited',
+      industry: 'Technology',
+      logo: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iIzM2ODJmNiIvPjx0ZXh0IHg9IjUwIiB5PSI1MCIgZm9udC1zaXplPSI0MCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5BQzwvdGV4dD48L3N2Zz4=',
+      email: 'contact@acmecorp.com',
+      phone: '+1 (555) 123-4567',
+      address: {
+        street: '123 Tech Street',
+        city: 'San Francisco',
+        state: 'California',
+        country: 'USA',
+        postalCode: '94102'
+      },
+      gstNumber: 'GST123456789',
+      taxNumber: 'TAX987654321',
+      status: 'active',
+      createdAt: new Date('2024-01-15'),
+      updatedAt: new Date('2024-01-15')
+    }
+  ],
+  admins: [
+    {
+      id: 'demo-admin-1',
+      fullName: 'John Doe',
+      email: 'john.doe@acmecorp.com',
+      phone: '+1 (555) 987-6543',
+      companyId: 'demo-company-1',
+      role: 'admin',
+      status: 'active',
+      createdAt: new Date('2024-01-15'),
+      updatedAt: new Date('2024-01-15')
+    }
+  ],
   subscriptions: [],
   companySubscriptions: [],
   ui: {

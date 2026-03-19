@@ -147,8 +147,9 @@ const Modal: React.FC<ModalProps> = ({
           ref={modalRef}
           className={`
             inline-block w-full ${sizeClasses[size]} p-6 my-8 overflow-hidden text-left align-middle 
-            transition-all transform bg-white shadow-xl rounded-lg ${contentClassName} ${className}
+            transition-all transform bg-white shadow-xl rounded-2xl ${contentClassName} ${className}
           `}
+          style={{ backgroundColor: 'white' }}
           onKeyDown={handleKeyDown}
           tabIndex={-1}
         >

@@ -113,9 +113,10 @@ const EditModal: React.FC<EditModalProps> = ({ product, categories, brands, unit
   const labelCls = "block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1";
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm" onClick={e => { if (e.target === e.currentTarget) onClose(); }}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40" onClick={e => { if (e.target === e.currentTarget) onClose(); }}>
       <motion.div initial={{ opacity: 0, scale: 0.95, y: -12 }} animate={{ opacity: 1, scale: 1, y: 0 }}
-        className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto"
+        style={{ backgroundColor: '#ffffff', opacity: 1 }}>
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 sticky top-0 bg-white z-10">
           <div className="flex items-center gap-3">
@@ -174,11 +175,14 @@ const EditModal: React.FC<EditModalProps> = ({ product, categories, brands, unit
 
         {/* Footer */}
         <div className="flex gap-3 px-6 py-4 border-t border-slate-100 sticky bottom-0 bg-white">
-          <button onClick={onClose} className="flex-1 h-10 rounded-xl border border-slate-200 text-sm font-medium text-slate-500 hover:bg-slate-50 transition">
+          <button onClick={onClose} 
+            style={{ minHeight: '48px', height: '48px', borderRadius: '12px' }}
+            className="flex-1 bg-red-600 text-white text-sm font-medium hover:bg-red-700 transition flex items-center justify-center">
             Cancel
           </button>
           <button onClick={() => { onSave(form); onClose(); }}
-            className="flex-1 h-10 rounded-xl bg-[#002147] text-white text-sm font-semibold hover:bg-[#003366] transition flex items-center justify-center gap-2">
+            style={{ minHeight: '48px', height: '48px', borderRadius: '12px' }}
+            className="flex-1 bg-[#002147] text-white text-sm font-semibold hover:bg-[#003366] transition flex items-center justify-center gap-2">
             <Save size={15} /> Update Product
           </button>
         </div>
@@ -191,17 +195,26 @@ const EditModal: React.FC<EditModalProps> = ({ product, categories, brands, unit
    Delete Confirm Modal
 ───────────────────────────────────────── */
 const DeleteModal: React.FC<{ name: string; onClose: () => void; onConfirm: () => void }> = ({ name, onClose, onConfirm }) => (
-  <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm" onClick={e => { if (e.target === e.currentTarget) onClose(); }}>
+  <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40" onClick={e => { if (e.target === e.currentTarget) onClose(); }}>
     <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
-      className="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6">
+      className="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6"
+      style={{ backgroundColor: '#ffffff', opacity: 1 }}>
       <div className="flex items-center gap-3 mb-4">
         <div className="p-2 bg-rose-50 rounded-lg text-rose-500"><AlertTriangle size={18} /></div>
         <h3 className="font-bold text-slate-800">Delete Product</h3>
       </div>
       <p className="text-sm text-slate-500 mb-6">Are you sure you want to delete <span className="font-semibold text-slate-700">"{name}"</span>? This cannot be undone.</p>
       <div className="flex gap-3">
-        <button onClick={onClose} className="flex-1 h-10 rounded-xl border border-slate-200 text-sm font-medium text-slate-500 hover:bg-slate-50 transition">Cancel</button>
-        <button onClick={() => { onConfirm(); onClose(); }} className="flex-1 h-10 rounded-xl bg-rose-500 text-white text-sm font-semibold hover:bg-rose-600 transition">Delete</button>
+        <button onClick={onClose} 
+          style={{ minHeight: '48px', height: '48px', borderRadius: '12px' }}
+          className="flex-1 bg-red-600 text-white text-sm font-medium hover:bg-red-700 transition flex items-center justify-center">
+          Cancel
+        </button>
+        <button onClick={() => { onConfirm(); onClose(); }} 
+          style={{ minHeight: '48px', height: '48px', borderRadius: '12px' }}
+          className="flex-1 bg-[#002147] text-white text-sm font-semibold hover:bg-[#003366] transition flex items-center justify-center">
+          Delete
+        </button>
       </div>
     </motion.div>
   </div>
@@ -229,10 +242,11 @@ const StockModal: React.FC<StockModalProps> = ({ product, onClose, onSave }) => 
   const handleSave = () => { onSave(product.id, computed()); onClose(); };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm"
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40"
       onClick={e => { if (e.target === e.currentTarget) onClose(); }}>
       <motion.div initial={{ opacity: 0, scale: 0.95, y: -10 }} animate={{ opacity: 1, scale: 1, y: 0 }}
-        className="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6">
+        className="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6"
+        style={{ backgroundColor: '#ffffff', opacity: 1 }}>
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2.5">
@@ -282,9 +296,14 @@ const StockModal: React.FC<StockModalProps> = ({ product, onClose, onSave }) => 
 
         {/* Actions */}
         <div className="flex gap-3">
-          <button onClick={onClose} className="flex-1 h-10 rounded-xl border border-slate-200 text-sm font-medium text-slate-500 hover:bg-slate-50 transition">Cancel</button>
+          <button onClick={onClose} 
+            style={{ minHeight: '48px', height: '48px', borderRadius: '12px' }}
+            className="flex-1 bg-red-600 text-white text-sm font-medium hover:bg-red-700 transition flex items-center justify-center">
+            Cancel
+          </button>
           <button onClick={handleSave} disabled={qty === ''}
-            className="flex-1 h-10 rounded-xl bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700 disabled:opacity-40 disabled:cursor-not-allowed transition flex items-center justify-center gap-2">
+            style={{ minHeight: '48px', height: '48px', borderRadius: '12px' }}
+            className="flex-1 bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700 disabled:opacity-40 disabled:cursor-not-allowed transition flex items-center justify-center gap-2">
             <Save size={14} /> Update Stock
           </button>
         </div>
@@ -473,16 +492,16 @@ export const ProductsPage: React.FC = () => {
                     <td className="px-5 py-3.5 text-right">
                       <div className="flex items-center justify-end gap-2">
                         <button onClick={() => setEditProduct(p)}
-                          className="h-8 w-8 flex items-center justify-center rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-600 border border-indigo-100 transition" title="Edit">
-                          <Edit size={14} />
+                          className="h-8 w-8 flex items-center justify-center rounded-lg bg-[#002147] hover:bg-[#003366] text-white border border-[#002147] transition" title="Edit">
+                          <Edit size={14} stroke="currentColor" strokeWidth={2} />
                         </button>
                         <button onClick={() => setStockProduct(p)}
-                          className="h-8 w-8 flex items-center justify-center rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-600 border border-emerald-100 transition" title="Update Stock">
-                          <Layers size={14} />
+                          className="h-8 w-8 flex items-center justify-center rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white border border-emerald-600 transition" title="Update Stock">
+                          <Layers size={14} stroke="currentColor" strokeWidth={2} />
                         </button>
                         <button onClick={() => setDeleteProduct(p)}
-                          className="h-8 w-8 flex items-center justify-center rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-500 border border-rose-100 transition" title="Delete">
-                          <Trash2 size={14} />
+                          className="h-8 w-8 flex items-center justify-center rounded-lg bg-red-600 hover:bg-red-700 text-white border border-red-600 transition" title="Delete">
+                          <Trash2 size={14} stroke="currentColor" strokeWidth={2} />
                         </button>
                       </div>
                     </td>

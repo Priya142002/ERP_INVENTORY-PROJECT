@@ -43,8 +43,8 @@ const Button: React.FC<ButtonProps> = ({
 
   const variantClasses = {
     primary: 'text-white bg-[#002147] hover:bg-[#003366] focus:ring-[#002147] shadow-sm',
-    secondary: 'text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 focus:ring-primary-500 shadow-sm',
-    danger: 'text-white bg-error-600 hover:bg-error-700 focus:ring-error-500 shadow-sm',
+    secondary: 'text-gray-700 bg-white border border-gray-300 focus:ring-primary-500 shadow-sm',
+    danger: 'text-white bg-red-600 hover:bg-red-700 focus:ring-red-500 shadow-sm',
     success: 'text-white bg-success-600 hover:bg-success-700 focus:ring-success-500 shadow-sm',
     warning: 'text-white bg-warning-600 hover:bg-warning-700 focus:ring-warning-500 shadow-sm',
     info: 'text-white bg-info-600 hover:bg-info-700 focus:ring-info-500 shadow-sm',
@@ -53,6 +53,18 @@ const Button: React.FC<ButtonProps> = ({
 
   const widthClass = fullWidth ? 'w-full' : '';
   const isDisabled = disabled || loading;
+
+  // Clone icon elements to ensure they inherit color
+  const renderIcon = (icon: React.ReactNode) => {
+    if (!icon) return null;
+    if (React.isValidElement(icon)) {
+      return React.cloneElement(icon as React.ReactElement<any>, {
+        color: 'currentColor',
+        className: `${(icon.props as any).className || ''}`
+      });
+    }
+    return icon;
+  };
 
   return (
     <button
@@ -75,9 +87,9 @@ const Button: React.FC<ButtonProps> = ({
           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
         </svg>
       )}
-      {!loading && leftIcon && <span className={children ? "mr-2" : ""}>{leftIcon}</span>}
+      {!loading && leftIcon && <span className={`inline-flex ${children ? "mr-2" : ""}`} style={{ color: 'inherit' }}>{renderIcon(leftIcon)}</span>}
       {children}
-      {!loading && rightIcon && <span className={children ? "ml-2" : ""}>{rightIcon}</span>}
+      {!loading && rightIcon && <span className={`inline-flex ${children ? "ml-2" : ""}`} style={{ color: 'inherit' }}>{renderIcon(rightIcon)}</span>}
     </button>
   );
 };

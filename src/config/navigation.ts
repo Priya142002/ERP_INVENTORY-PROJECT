@@ -233,13 +233,8 @@ export const adminNavigation: NavigationItem[] = [
     id: 'admin',
     label: 'Admin Settings',
     icon: 'cog',
-    roles: ['admin'],
-    children: [
-      { id: 'adm-company', label: 'Company Profile', path: '/admin/settings/company', roles: ['admin'], icon: 'office-building' },
-      { id: 'adm-users', label: 'User Management', path: '/admin/settings/users', roles: ['admin'], icon: 'users' },
-      { id: 'adm-access', label: 'Roles & Permissions', path: '/admin/settings/roles', roles: ['admin'], icon: 'shield-check' },
-      { id: 'adm-activity', label: 'Audit Logs', path: '/admin/settings/activity', roles: ['admin'], icon: 'clipboard-list' },
-    ]
+    path: '/admin/settings',
+    roles: ['admin']
   }
 ];
 

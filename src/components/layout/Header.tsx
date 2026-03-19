@@ -25,9 +25,6 @@ export const Header: React.FC<HeaderProps> = ({ user, onMenuClick, onLogout, onS
   const [showCompanyMenu, setShowCompanyMenu] = useState(false);
   const [currentCompany, setCurrentCompany] = useState('Hari silks');
   
-  const [searchQuery, setSearchQuery] = useState('');
-  const [isSearchFocused, setIsSearchFocused] = useState(false);
-  
   const notificationsRef = useRef<HTMLDivElement>(null);
   const userMenuRef = useRef<HTMLDivElement>(null);
   const companyMenuRef = useRef<HTMLDivElement>(null);
@@ -79,44 +76,35 @@ export const Header: React.FC<HeaderProps> = ({ user, onMenuClick, onLogout, onS
     day: 'numeric' 
   });
 
+  // Get greeting based on time of day
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return 'Good Morning';
+    if (hour < 17) return 'Good Afternoon';
+    return 'Good Evening';
+  };
+
   return (
     <header 
-      className="sticky top-0 z-40 transition-all duration-300 bg-white/80 backdrop-blur-md border-b border-slate-200 shadow-sm"
+      className="sticky top-0 z-40 transition-all duration-300 backdrop-blur-md border-b border-slate-200 shadow-sm"
+      style={{ backgroundColor: user.role === 'super_admin' ? "var(--sa-header)" : "var(--admin-header)" }}
     >
       <div className="flex items-center justify-between h-20 px-6 lg:px-8 mx-auto w-full">
         {/* LEFT SECTION */}
         <div className="flex items-center flex-1">
-          {/* Search Bar - ONLY for Super Admin side */}
+          {/* Greeting - ONLY for Super Admin side */}
           {user.role === 'super_admin' && (
-            <div className={cn(
-              "relative w-full max-w-md transition-all duration-300",
-              isSearchFocused ? "max-w-lg" : "max-w-xs "
-            )}>
-              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                <Icon 
-                  name="search" 
-                  size="sm" 
-                  className={cn("transition-colors", isSearchFocused ? "text-indigo-600" : "text-slate-400")} 
-                />
-              </div>
-              <input
-                type="text"
-                placeholder="Search anything..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onFocus={() => setIsSearchFocused(true)}
-                onBlur={() => setIsSearchFocused(false)}
-                className={cn(
-                  "block w-full pl-11 pr-12 py-2.5 text-sm font-bold bg-slate-100/50 border-2 border-transparent rounded-2xl transition-all outline-none",
-                  isSearchFocused 
-                    ? "bg-white border-indigo-500 shadow-lg shadow-indigo-100 ring-4 ring-indigo-50" 
-                    : "hover:bg-slate-100 text-slate-600"
-                )}
-              />
-              <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
-                <span className="text-[10px] font-black text-slate-400 border border-slate-200 rounded px-1.5 py-0.5 bg-white uppercase tracking-tighter">
-                  ⌘ K
-                </span>
+            <div className="flex items-center">
+              <div className="flex items-center">
+                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center mr-3 shadow-md">
+                  <span className="text-lg">👋</span>
+                </div>
+                <div>
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-0.5">Welcome Back</p>
+                  <h2 className="text-base font-black text-slate-900 leading-tight">
+                    {getGreeting()}, <span className="text-indigo-600">Super Admin</span>
+                  </h2>
+                </div>
               </div>
             </div>
           )}
@@ -128,8 +116,8 @@ export const Header: React.FC<HeaderProps> = ({ user, onMenuClick, onLogout, onS
                 onClick={() => setShowCompanyMenu(!showCompanyMenu)}
                 className="flex items-center px-4 py-2 space-x-4 rounded-2xl hover:bg-slate-50 transition-all border border-transparent hover:border-slate-100 group"
               >
-                <div className="w-11 h-11 rounded-xl bg-indigo-600 flex items-center justify-center text-white shadow-lg shadow-indigo-200 group-hover:scale-105 transition-transform">
-                  <Icon name="building-2" size="sm" />
+                <div className="w-11 h-11 rounded-xl flex items-center justify-center group-hover:scale-105 transition-transform" style={{ color: 'rgb(57, 73, 171)' }}>
+                  <Icon name="building-2" size="lg" />
                 </div>
                 <div className="text-left">
                   <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-0.5">Active Entity</p>
@@ -141,7 +129,7 @@ export const Header: React.FC<HeaderProps> = ({ user, onMenuClick, onLogout, onS
               </button>
 
               {showCompanyMenu && (
-                <div className="absolute top-full left-0 mt-3 w-[400px] bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden z-[70] animate-in fade-in slide-in-from-top-3 duration-200">
+                <div className="absolute top-full left-0 mt-3 w-[400px] bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden z-[9999] animate-in fade-in slide-in-from-top-3 duration-200">
                   <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
                     <span className="text-[11px] font-black text-slate-400 uppercase tracking-wider">My Organizations</span>
                     <button className="flex items-center text-xs font-bold text-slate-600 hover:text-indigo-600 transition-colors">
@@ -219,15 +207,15 @@ export const Header: React.FC<HeaderProps> = ({ user, onMenuClick, onLogout, onS
               }}
               className={cn(
                 "p-3 rounded-xl transition-all relative group",
-                showNotifications ? "bg-indigo-50 text-indigo-600" : "text-slate-400 hover:text-indigo-600 hover:bg-slate-100"
+                showNotifications ? "text-indigo-600" : "text-slate-400 hover:text-indigo-600 hover:bg-slate-100"
               )}
             >
               <Icon name="bell" size="sm" />
               <span className="absolute top-2.5 right-2.5 block h-2.5 w-2.5 rounded-full bg-rose-500 ring-2 ring-white group-hover:scale-110 transition-transform"></span>
             </button>
 
-            {showNotifications && (
-              <div className="absolute right-0 mt-3 w-80 bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden z-[70] animate-in fade-in slide-in-from-top-3 duration-200">
+              {showNotifications && (
+              <div className="absolute right-0 mt-3 w-80 bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden z-[9999] animate-in fade-in slide-in-from-top-3 duration-200">
                 <div className="px-5 py-4 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
                   <h3 className="font-bold text-slate-900">Notifications</h3>
                   <button className="text-xs font-bold text-indigo-600 hover:underline">Mark all read</button>
@@ -245,6 +233,21 @@ export const Header: React.FC<HeaderProps> = ({ user, onMenuClick, onLogout, onS
             )}
           </div>
 
+          {/* Settings Button - For both Super Admin and Admin */}
+          <button
+            onClick={() => {
+              if (user.role === 'super_admin') {
+                window.location.href = '/superadmin/system';
+              } else if (user.role === 'admin') {
+                window.location.href = '/admin/settings';
+              }
+            }}
+            className="p-3 rounded-xl text-slate-400 hover:text-indigo-600 hover:bg-slate-100 transition-all"
+            title="Settings"
+          >
+            <Icon name="cog" size="sm" />
+          </button>
+
           {/* Vertical Divider */}
           <div className="h-8 w-px bg-slate-200 hidden lg:block mx-1"></div>
 
@@ -260,7 +263,7 @@ export const Header: React.FC<HeaderProps> = ({ user, onMenuClick, onLogout, onS
                 showUserMenu ? "bg-white shadow-lg border-slate-200 ring-4 ring-slate-50" : "hover:bg-slate-50"
               )}
             >
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-600 p-[2px] shadow-lg shadow-indigo-200 transition-transform group-hover:scale-105">
+              <div className="w-9 h-9 rounded-xl bg-indigo-500 p-[2px] shadow-lg shadow-indigo-200 transition-transform group-hover:scale-105">
                 <div className="w-full h-full rounded-[9px] bg-white flex items-center justify-center overflow-hidden">
                   <img 
                     src={`https://ui-avatars.com/api/?name=${user.fullName}&background=6366f1&color=fff&bold=true`} 
@@ -272,7 +275,7 @@ export const Header: React.FC<HeaderProps> = ({ user, onMenuClick, onLogout, onS
               <div className="hidden lg:block text-left pr-2">
                 <p className="text-sm font-black text-slate-900 leading-tight">{user.fullName}</p>
                 <div className="flex items-center mt-0.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5 shadow-[0_0_4px_rgba(16,185,129,0.6)]"></span>
                   <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{user.role === 'admin' ? 'Account Admin' : user.role.replace('_', ' ')}</span>
                 </div>
               </div>
@@ -280,17 +283,8 @@ export const Header: React.FC<HeaderProps> = ({ user, onMenuClick, onLogout, onS
             </button>
 
             {showUserMenu && (
-              <div className="absolute right-0 mt-3 w-64 bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden z-[70] animate-in fade-in slide-in-from-top-3 duration-200">
+              <div className="absolute right-0 mt-3 w-64 bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden z-[9999] animate-in fade-in slide-in-from-top-3 duration-200">
                 <div className="p-2">
-                  <button className="w-full flex items-center px-4 py-3 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 transition-colors">
-                    <Icon name="user-circle" className="mr-3 text-indigo-500" size="sm" />
-                    My Profile
-                  </button>
-                  <button className="w-full flex items-center px-4 py-3 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 transition-colors">
-                    <Icon name="cog" className="mr-3 text-indigo-500" size="sm" />
-                    Settings
-                  </button>
-                  <div className="my-2 border-t border-slate-100"></div>
                   {onSwitchRole && (
                     <button 
                       onClick={onSwitchRole}
@@ -300,17 +294,19 @@ export const Header: React.FC<HeaderProps> = ({ user, onMenuClick, onLogout, onS
                       Switch Role
                     </button>
                   )}
-                  <button 
-                    onClick={onLogout}
-                    className="w-full flex items-center px-4 py-3 rounded-xl text-sm font-bold text-rose-600 hover:bg-rose-50 transition-colors"
-                  >
-                    <Icon name="log-out" className="mr-3" size="sm" />
-                    Logout
-                  </button>
                 </div>
               </div>
             )}
           </div>
+          
+          {/* Logout Button - Separate from dropdown */}
+          <button 
+            onClick={onLogout}
+            className="p-3 rounded-xl text-rose-600 hover:text-rose-700 hover:bg-rose-50 transition-all"
+            title="Logout"
+          >
+            <Icon name="log-out" size="sm" />
+          </button>
         </div>
       </div>
     </header>

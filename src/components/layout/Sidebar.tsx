@@ -144,18 +144,19 @@ export const Sidebar: React.FC<SidebarProps> = ({ user, isOpen, onClose }) => {
       {/* Sidebar */}
       <div className={cn(
         "fixed inset-y-0 left-0 z-50 w-72 transform transition-transform duration-300 ease-in-out border-r lg:translate-x-0 lg:static lg:inset-0 flex flex-col overflow-x-hidden",
-        "bg-[#002147] border-white/10", // Navy Blue Background
+        "border-white/10", // Navy Blue Background
         isOpen ? 'translate-x-0' : '-translate-x-full'
       )}
+      style={{ backgroundColor: user.role === 'super_admin' ? "var(--sa-sidebar)" : "var(--admin-sidebar)" }}
       >
         {/* Sidebar header */}
         <div className="flex items-center justify-between h-20 px-6 border-b border-white/10">
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              <div className={`w-10 h-10 rounded-xl overflow-hidden border ${
-                user.role === 'super_admin' ? 'border-slate-700 bg-slate-800' : 'border-white border-opacity-30 bg-white'
+              <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+                user.role === 'super_admin' ? 'bg-slate-700' : 'bg-white/20'
               }`}>
-                <img src="/src/assets/logoicon.png" alt="Vivify logo" className="w-full h-full object-cover" />
+                <Icon name="dashboard" className="text-white" size="lg" />
               </div>
             </div>
             <div className="ml-4">

@@ -83,10 +83,12 @@ const EditDispatchModal: React.FC<EditModalProps> = ({ dispatch, customers, onCl
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center p-4 pt-8 bg-black/45 backdrop-blur-sm overflow-y-auto"
+    <div className="fixed inset-0 z-50 flex items-start justify-center p-4 pt-8 bg-black/45 overflow-y-auto"
+      style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}
       onClick={e => { if (e.target === e.currentTarget) onClose(); }}>
       <motion.div initial={{ opacity: 0, scale: 0.96, y: -16 }} animate={{ opacity: 1, scale: 1, y: 0 }}
-        className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl mb-8">
+        className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl mb-8 relative"
+        style={{ backgroundColor: '#ffffff', opacity: 1 }}>
 
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 sticky top-0 bg-white z-10 rounded-t-2xl">
@@ -275,10 +277,11 @@ const EditDispatchModal: React.FC<EditModalProps> = ({ dispatch, customers, onCl
    Delete Confirm Modal
 ───────────────────────────────────────── */
 const DeleteModal: React.FC<{ dispatchNo: string; onClose: () => void; onConfirm: () => void }> = ({ dispatchNo, onClose, onConfirm }) => (
-  <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm"
+  <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40"
     onClick={e => { if (e.target === e.currentTarget) onClose(); }}>
     <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
-      className="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6">
+      className="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6"
+      style={{ backgroundColor: '#ffffff', opacity: 1 }}>
       <div className="flex items-center gap-3 mb-4">
         <div className="p-2 bg-rose-50 rounded-lg text-rose-500"><AlertTriangle size={18} /></div>
         <h3 className="font-bold text-slate-800">Delete Dispatch</h3>
@@ -287,8 +290,16 @@ const DeleteModal: React.FC<{ dispatchNo: string; onClose: () => void; onConfirm
         Are you sure you want to delete <span className="font-semibold text-slate-700">"{dispatchNo}"</span>? This cannot be undone.
       </p>
       <div className="flex gap-3">
-        <button onClick={onClose} className="flex-1 h-10 rounded-xl border border-slate-200 text-sm font-medium text-slate-500 hover:bg-slate-50 transition">Cancel</button>
-        <button onClick={() => { onConfirm(); onClose(); }} className="flex-1 h-10 rounded-xl bg-rose-500 text-white text-sm font-semibold hover:bg-rose-600 transition">Delete</button>
+        <button onClick={onClose} 
+          style={{ minHeight: '48px', height: '48px', borderRadius: '12px' }}
+          className="flex-1 bg-red-600 text-white text-sm font-medium hover:bg-red-700 transition flex items-center justify-center">
+          Cancel
+        </button>
+        <button onClick={() => { onConfirm(); onClose(); }} 
+          style={{ minHeight: '48px', height: '48px', borderRadius: '12px' }}
+          className="flex-1 bg-[#002147] text-white text-sm font-semibold hover:bg-[#003366] transition flex items-center justify-center">
+          Delete
+        </button>
       </div>
     </motion.div>
   </div>
@@ -396,12 +407,12 @@ export const MaterialDispatchPage: React.FC = () => {
                     <td className="px-5 py-3.5 text-right">
                       <div className="flex items-center justify-end gap-2">
                         <button onClick={() => setEditDispatch(d)}
-                          className="h-8 w-8 flex items-center justify-center rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-600 border border-indigo-100 transition" title="Edit">
-                          <Edit size={14} />
+                          className="h-8 w-8 flex items-center justify-center rounded-lg bg-[#002147] hover:bg-[#003366] text-white border border-[#002147] transition" title="Edit">
+                          <Edit size={14} stroke="currentColor" strokeWidth={2} />
                         </button>
                         <button onClick={() => setDeleteDispatch(d)}
-                          className="h-8 w-8 flex items-center justify-center rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-500 border border-rose-100 transition" title="Delete">
-                          <Trash2 size={14} />
+                          className="h-8 w-8 flex items-center justify-center rounded-lg bg-red-600 hover:bg-red-700 text-white border border-red-600 transition" title="Delete">
+                          <Trash2 size={14} stroke="currentColor" strokeWidth={2} />
                         </button>
                       </div>
                     </td>

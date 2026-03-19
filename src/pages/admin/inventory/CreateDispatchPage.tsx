@@ -46,10 +46,11 @@ const AddCustomerModal: React.FC<AddCustomerModalProps> = ({ onClose, onSave }) 
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/45 backdrop-blur-sm"
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/45"
       onClick={e => { if (e.target === e.currentTarget) onClose(); }}>
       <motion.div initial={{ opacity: 0, scale: 0.95, y: -12 }} animate={{ opacity: 1, scale: 1, y: 0 }}
-        className="bg-white rounded-2xl shadow-2xl w-full max-w-xl max-h-[90vh] overflow-y-auto">
+        className="bg-white rounded-2xl shadow-2xl w-full max-w-xl max-h-[90vh] overflow-y-auto"
+        style={{ backgroundColor: '#ffffff', opacity: 1 }}>
 
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 sticky top-0 bg-white z-10">
@@ -132,9 +133,14 @@ const AddCustomerModal: React.FC<AddCustomerModalProps> = ({ onClose, onSave }) 
 
         {/* Footer */}
         <div className="flex gap-3 px-6 py-4 border-t border-slate-100 sticky bottom-0 bg-white">
-          <button onClick={onClose} className="flex-1 h-10 rounded-xl border border-slate-200 text-sm font-medium text-slate-500 hover:bg-slate-50 transition">Cancel</button>
+          <button onClick={onClose} 
+            style={{ minHeight: '48px', height: '48px', borderRadius: '12px' }}
+            className="flex-1 bg-red-600 text-white text-sm font-medium hover:bg-red-700 transition flex items-center justify-center">
+            Cancel
+          </button>
           <button onClick={handleSave} disabled={!form.name.trim()}
-            className="flex-1 h-10 rounded-xl bg-[#002147] text-white text-sm font-semibold hover:bg-[#003366] disabled:opacity-40 disabled:cursor-not-allowed transition flex items-center justify-center gap-2">
+            style={{ minHeight: '48px', height: '48px', borderRadius: '12px' }}
+            className="flex-1 bg-[#002147] text-white text-sm font-semibold hover:bg-[#003366] disabled:opacity-40 disabled:cursor-not-allowed transition flex items-center justify-center gap-2">
             <Save size={14} /> Save Customer
           </button>
         </div>

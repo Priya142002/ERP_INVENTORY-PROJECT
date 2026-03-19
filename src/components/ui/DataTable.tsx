@@ -236,12 +236,12 @@ function DataTable<T extends Record<string, any>>({
               {columns.map((column) => (
                 <th
                   key={String(column.key)}
-                  className={`
-                  `}
+                  className=""
+                  style={{ color: 'white' }}
                   onClick={() => column.sortable && handleSort(column.key)}
                 >
                   <div className={`flex items-center space-x-2 ${column.align === 'center' ? 'justify-center' : column.align === 'right' ? 'justify-end' : 'justify-start'}`}>
-                    <span>{column.label}</span>
+                    <span style={{ color: 'white' }}>{column.label}</span>
                     {column.sortable && sortable && (
                       <div className="flex flex-col">
                         <svg
@@ -272,7 +272,7 @@ function DataTable<T extends Record<string, any>>({
                 </th>
               ))}
               {(actions.length > 0 || onEdit || onDelete) && (
-                <th className="px-5 py-4 !text-right uppercase tracking-widest">
+                <th className="px-5 py-4 !text-center uppercase tracking-widest" style={{ color: 'white' }}>
                   Actions
                 </th>
               )}
@@ -325,8 +325,8 @@ function DataTable<T extends Record<string, any>>({
                       </td>
                     ))}
                     {(actions.length > 0 || onEdit || onDelete) && (
-                      <td className="px-5 py-4 text-right" onClick={(e) => e.stopPropagation()}>
-                        <div className="flex items-center justify-end gap-2">
+                      <td className="px-5 py-4 align-middle text-center" onClick={(e) => e.stopPropagation()}>
+                        <div className="inline-flex items-center gap-2">
                           {actions.map((action, actionIndex) => {
                             if (action.show && !action.show(item)) return null;
                             
@@ -338,7 +338,7 @@ function DataTable<T extends Record<string, any>>({
                                 onClick={() => action.onClick(item)}
                                 leftIcon={action.icon}
                                 title={action.label}
-                                className="px-2"
+                                className="px-3 py-2 w-9 h-9 flex items-center justify-center"
                               />
                             );
                           })}
@@ -353,7 +353,7 @@ function DataTable<T extends Record<string, any>>({
                                 </svg>
                               }
                               title="Edit"
-                              className="px-2"
+                              className="px-3 py-2 w-9 h-9 flex items-center justify-center"
                             />
                           )}
                           {onDelete && (
@@ -367,7 +367,7 @@ function DataTable<T extends Record<string, any>>({
                                 </svg>
                               }
                               title="Delete"
-                              className="px-2"
+                              className="px-3 py-2 w-9 h-9 flex items-center justify-center"
                             />
                           )}
                         </div>

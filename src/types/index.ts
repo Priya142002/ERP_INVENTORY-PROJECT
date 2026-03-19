@@ -5,7 +5,10 @@
 // Company Data Model
 export interface Company {
   id: string;
+  code: string; // Unique company code
   name: string;
+  companyType: 'private_limited' | 'public_limited' | 'llp' | 'partnership' | 'sole_proprietorship' | 'opc' | 'government' | 'non_profit';
+  industry: string;
   logo?: string; // Base64 encoded image or URL
   email: string;
   phone: string;
@@ -18,6 +21,8 @@ export interface Company {
   };
   gstNumber?: string;
   taxNumber?: string;
+  financialYearStart?: string; // e.g., "April"
+  currency?: string;
   status: 'active' | 'inactive';
   createdAt: Date;
   updatedAt: Date;
